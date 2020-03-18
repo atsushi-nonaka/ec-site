@@ -1,6 +1,10 @@
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
+<<<<<<< HEAD
     url: jdbc:postgresql://localhost:5432/student
+=======
+    url: jdbc:postgresql://localhost:5432/ec-site
+>>>>>>> feature/register
     username: postgres
     password: postgres
