@@ -35,7 +35,7 @@ public class RegisterUserController {
 	 * 
 	 * @return ユーザー登録画面ページ
 	 */
-	@RequestMapping("/register_user")
+	@RequestMapping("/to_register_user")
 	public String toRegister() {
 		return "register_user";
 	}
@@ -46,7 +46,7 @@ public class RegisterUserController {
 	 * @param form ユーザーフォーム
 	 * @return ログインページ
 	 */
-	@RequestMapping("/to_login")
+	@RequestMapping("/register_user")
 	public String registerUser(@Validated UserForm form, BindingResult result) {
 		String password = form.getPassword();
 		String checkPassword = form.getCheckPassword();
@@ -65,6 +65,6 @@ public class RegisterUserController {
 		User user = new User();
 		BeanUtils.copyProperties(form, user);
 		service.registerUser(user);
-		return "login";
+		return "forward:/login";
 	}
 }

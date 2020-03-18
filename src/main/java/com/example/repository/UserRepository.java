@@ -51,8 +51,13 @@ public class UserRepository {
 		template.update(sql, param);
 	}
 	
-	//メールアドレスが既にあるかのSQL文
-	public List<User> findUserByEmail(String email) {
+	/**
+	 * メールアドレスからユーザー情報を検索する.
+	 * 
+	 * @param email メールアドレス
+	 * @return ユーザーリスト or null
+	 */
+	public User findUserByEmail(String email) {
 		String sql = "SELECT id, name, email,password, zipcode, address, telephone "
 				    + "FROM users WHERE email = :email";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("email", email);
@@ -60,7 +65,24 @@ public class UserRepository {
 		if(userList.size() == 0) {
 			return null;
 		}
-		return userList;
+		return userList.get(0);
+	}
+	
+	/**
+	 * メールアドレスとパスワードからユーザー情報を検索する.
+	 * 
+	 * @param email メールアドレス
+	 * @return ユーザーリスト or null
+	 */
+	public User findUserByEmailAndPassword(String email, String password) {
+		String sql = "SELECT id, name, email,password, zipcode, address, telephone "
+				    + "FROM users WHERE email = :email AND password = :password";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("email", email).addValue("password", password);
+		List<User> userList = template.query(sql, param, USER_ROW_MAPPER);
+		if(userList.size() == 0) {
+			return null;
+		}
+		return userList.get(0);
 	}
 	
 }

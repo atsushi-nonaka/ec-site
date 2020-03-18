@@ -10,35 +10,27 @@ import com.example.domain.User;
 import com.example.repository.UserRepository;
 
 /**
- * ユーザー登録するためのサービス.
+ * ログイン情報を操作するサービス.
  * 
  * @author nonaa
  *
  */
 @Service
 @Transactional
-public class RegisterUserService {
-
+public class LoginService {
+	
 	@Autowired
 	private UserRepository repository;
-
-	/**
-	 * ユーザー登録するためにレポジトリを呼び出す.
-	 * 
-	 * @param user ユーザー
-	 */
-	public void registerUser(User user) {
-		repository.insert(user);
-	}
 	
 	/**
-	 * メールアドレスからユーザーの有無を確認する.
+	 * ユーザー情報の有無を検索する.
 	 * 
 	 * @param email メールアドレス
-	 * @return ユーザー情報
+	 * @param password パスワード
+	 * @return ユーザーリスト
 	 */
-	public User findUserByEmail(String email) {
-		User user = repository.findUserByEmail(email);
+	public User findUserByEmailAndPassword(String email, String password){
+		User user = repository.findUserByEmailAndPassword(email, password);
 		return user;
 	}
 }
