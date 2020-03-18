@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.example.domain.Item;
@@ -45,6 +47,14 @@ public class ItemRepository {
 		String sql = "SELECT id, name, description, price_m, price_l, image_path, deleted "
 					+ "FROM items ORDER BY name";
 		List<Item>itemList = template.query(sql, ITEM_ROW_MAPPER);
+		return itemList;
+	}
+	
+	public List<Item> findByName(String itemName){
+		String sql = "SELECT id, name, description, price_m, price_l, image_path, deleted "
+					+ "FROM items WHERE name LIKE :itemName ORDER BY name";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("itemName", "%" + itemName + "%");
+		List<Item>itemList = template.query(sql, param, ITEM_ROW_MAPPER);
 		return itemList;
 	}
 }
