@@ -53,8 +53,4 @@ public class Topping {
 		return "Topping [id=" + id + ", name=" + name + ", priceM=" + priceM + ", priceL=" + priceL + "]";
 	}
 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> feature/register

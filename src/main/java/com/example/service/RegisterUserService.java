@@ -1,20 +1,14 @@
 package com.example.service;
 
-<<<<<<< HEAD
-=======
 import java.util.List;
 
->>>>>>> feature/register
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.domain.User;
-<<<<<<< HEAD
 import com.example.repository.RegisterUserRepository;
-=======
 import com.example.repository.UserRepository;
->>>>>>> feature/register
 
 /**
  * ユーザー登録するためのサービス.
@@ -25,17 +19,10 @@ import com.example.repository.UserRepository;
 @Service
 @Transactional
 public class RegisterUserService {
-<<<<<<< HEAD
-	
-	@Autowired
-	private RegisterUserRepository repository;
-	
-=======
 
 	@Autowired
 	private UserRepository repository;
 
->>>>>>> feature/register
 	/**
 	 * ユーザー登録するためにレポジトリを呼び出す.
 	 * 
@@ -44,9 +31,6 @@ public class RegisterUserService {
 	public void registerUser(User user) {
 		repository.insert(user);
 	}
-<<<<<<< HEAD
-}
-=======
 	
 	/**
 	 * メールアドレスからユーザーの有無を確認する.
@@ -59,4 +43,3 @@ public class RegisterUserService {
 		return userList;
 	}
 }
->>>>>>> feature/register

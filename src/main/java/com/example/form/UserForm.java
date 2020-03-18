@@ -1,11 +1,8 @@
 package com.example.form;
 
-<<<<<<< HEAD
-=======
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
->>>>>>> feature/register
 /**
  * ユーザー情報を格納するためのフォーム.
  * 
@@ -14,18 +11,6 @@ import javax.validation.constraints.NotBlank;
  */
 public class UserForm {
 	/** ユーザー名 */
-<<<<<<< HEAD
-	private String name;
-	/** Eメール */
-	private String email;
-	/** パスワード */
-	private String password;
-	/** 郵便番号 */
-	private String zipcode;
-	/** 住所 */
-	private String address;
-	/** 電話番号 */
-=======
 	@NotBlank(message = "お名前を入力してください")
 	private String name;
 	/** Eメール */
@@ -46,7 +31,6 @@ public class UserForm {
 	private String address;
 	/** 電話番号 */
 	@NotBlank(message = "電話番号を入力してください")
->>>>>>> feature/register
 	private String telephone;
 
 	public String getName() {
@@ -97,15 +81,7 @@ public class UserForm {
 		this.telephone = telephone;
 	}
 
-<<<<<<< HEAD
-	@Override
-	public String toString() {
-		return "UserForm [name=" + name + ", email=" + email + ", password=" + password + ", zipcode=" + zipcode
-				+ ", address=" + address + ", telephone=" + telephone + "]";
-	}
 
-}
-=======
 	public String getCheckPassword() {
 		return checkPassword;
 	}
@@ -121,4 +97,3 @@ public class UserForm {
 	}
 
 }
->>>>>>> feature/register

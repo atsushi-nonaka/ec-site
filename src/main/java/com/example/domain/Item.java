@@ -95,9 +95,4 @@ public class Item {
 		return "Item [id=" + id + ", name=" + name + ", description=" + description + ", priceM=" + priceM + ", priceL="
 				+ priceL + ", imagePath=" + imagePath + ", deleted=" + deleted + ", toppingList=" + toppingList + "]";
 	}
-
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> feature/register

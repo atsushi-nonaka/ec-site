@@ -1,20 +1,13 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
-<html lang="ja">
-=======
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
->>>>>>> feature/register
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ネットでピザ注文</title>
-<<<<<<< HEAD
-<link href="../static/css/bootstrap.css" rel="stylesheet">
-=======
+
 <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
 <link th:href="@{/css/curry.css}" rel="stylesheet">
->>>>>>> feature/register
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -34,11 +27,7 @@
 							class="icon-bar"></span>
 					</button>
 					<a class="navbar-brand" href="item_list.html"> <!-- 企業ロゴ --> <img
-<<<<<<< HEAD
-						alt="main log" src="../static/img_pizza/header_logo.png" height="35">
-=======
 						alt="main log"  th:src="@{/img_curry/header_logo.png}" height="35">
->>>>>>> feature/register
 					</a>
 				</div>
 
@@ -58,22 +47,6 @@
 		<div class="row">
 			<div class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
 				<div class="well">
-<<<<<<< HEAD
-					<form method="post" action="item_list.html">
-						<fieldset>
-							<legend>ユーザ登録</legend>
-							<div class="form-group">
-								<label for="inputName">名前:</label><label
-									class="control-label" style="color: red" for="inputError">名前を入力してください</label>
-								<input type="text" id="inputName" class="form-control"
-									placeholder="Name">
-							</div>
-							<div class="form-group">
-								<label for="inputEmail">メールアドレス:</label><label
-									class="control-label" style="color: red" for="inputError">メールアドレスを入力してください</label>
-								<input type="text" id="inputEmail" class="form-control"
-									placeholder="Email">
-=======
 					<form method="post" th:action="@{/to_login}">
 						<fieldset th:object="${userForm}">
 							<legend>ユーザ登録</legend>
@@ -88,72 +61,42 @@
 									class="control-label" style="color: red" for="inputError" th:errors="*{email}"></label>
 								<input type="text" name="email" id="inputEmail" class="form-control"
 									placeholder="Email" th:field="*{email}">
->>>>>>> feature/register
 							</div>
 							<div class="form-group">
 								<label for="inputZipcode">郵便番号:</label>
 								<label
-<<<<<<< HEAD
-									class="control-label" style="color: red" for="inputError">郵便番号を入力してください</label>
-									<input type="button" value="住所検索">
-								<input type="text" id="inputZipcode" class="form-control"
-									placeholder="Zipcode">
-=======
 									class="control-label" style="color: red" for="inputError" th:errors="*{zipcode}"></label>
 									<input type="button" id="findAddress" value="住所検索">
 								<input type="text" name="zipcode" id="inputZipcode" class="form-control"
 									placeholder="Zipcode" th:field="*{zipcode}">
->>>>>>> feature/register
 								
 							</div>
 							<div class="form-group">
 								<label for="inputAddress">住所:</label>
 								<label
-<<<<<<< HEAD
-									class="control-label" style="color: red" for="inputError">住所を入力してください</label>
-								<input type="text" id="inputAddress" class="form-control"
-									placeholder="Address">
-=======
 									class="control-label" style="color: red" for="inputError" th:errors="*{address}"></label>
 								<input type="text" name="address" id="inputAddress" class="form-control"
 									placeholder="Address" th:field="*{address}">
->>>>>>> feature/register
 							</div>
 							<div class="form-group">
 								<label for="inputTel">電話番号:</label>
 								<label
-<<<<<<< HEAD
-									class="control-label" style="color: red" for="inputError">電話番号を入力してください</label>
-								<input type="text" id="inputTel" class="form-control"
-									placeholder="Tel">
-=======
 									class="control-label" style="color: red" for="inputError" th:errors="*{telephone}"></label>
 								<input type="text" name="telephone" id="inputTel" class="form-control"
 									placeholder="Tel" th:field="*{telephone}">
->>>>>>> feature/register
 							</div>
 							<div class="form-group">
 								<label for="inputPassword">パスワード:</label>
 								<label
-<<<<<<< HEAD
-									class="control-label" style="color: red" for="inputError">パスワードを入力してください</label>
-								<input type="text" id="inputPassword" class="form-control"
-=======
 									class="control-label" style="color: red" for="inputError" th:errors="*{password}"></label>
 								<input type="password" name="password" id="inputPassword" class="form-control"
->>>>>>> feature/register
 									placeholder="Password">
 							</div>
 							<div class="form-group">
 								<label for="inputConfirmationPassword">確認用パスワード:</label>
 								<label
-<<<<<<< HEAD
-									class="control-label" style="color: red" for="inputError">確認用パスワードを入力してください</label>
-								<input type="text" id="inputConfirmationPassword" class="form-control"
-=======
 									class="control-label" style="color: red" for="inputError" th:errors="*{checkPassword}"></label>
 								<input type="password" name="checkPassword" id="inputConfirmationPassword" class="form-control"
->>>>>>> feature/register
 									placeholder="Confirmation Password">
 							</div>
 							<div class="form-group">
@@ -170,12 +113,8 @@
 	<!-- end container -->
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<<<<<<< HEAD
-	<script src="../static/js/bootstrap.min.js"></script>
-=======
 	<script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
 	<script th:src="@{/js/script.js}"></script>
 	<script th:src="@{/js/bootstrap.min.js}"></script>
->>>>>>> feature/register
 </body>
 </html>

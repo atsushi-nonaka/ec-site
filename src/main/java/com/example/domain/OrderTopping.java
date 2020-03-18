@@ -55,7 +55,4 @@ public class OrderTopping {
 	}
 
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> feature/register
