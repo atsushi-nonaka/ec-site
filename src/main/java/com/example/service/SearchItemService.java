@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import com.example.domain.Item;
 import com.example.repository.ItemRepository;
@@ -28,10 +29,11 @@ public class SearchItemService {
 	 * @param itemName 商品名
 	 * @return 商品リスト
 	 */
-	public List<Item> findItemListByName(String itemName){
+	public List<Item> findItemListByName(String itemName, Model model){
 		List<Item> itemList = repository.findByName(itemName);
 		if(itemList.size() == 0) {
 			itemList = repository.findAll();
+			model.addAttribute("notFind", "該当する商品がありません");
 			return  itemList;
 		}
 		return itemList;

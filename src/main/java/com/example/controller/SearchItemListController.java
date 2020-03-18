@@ -25,7 +25,7 @@ public class SearchItemListController {
 	
 	@RequestMapping("/search")
 	public String findItemListByName(String itemName, Model model) {
-		List<Item> itemList = service.findItemListByName(itemName);
+		List<Item> itemList = service.findItemListByName(itemName, model);
 		model.addAttribute("itemList", itemList);
 		return "item_list_curry";
 	}
