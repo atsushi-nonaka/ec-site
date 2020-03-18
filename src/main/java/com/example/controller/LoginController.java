@@ -1,7 +1,5 @@
 package com.example.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +50,6 @@ public class LoginController {
 		}
 		
 		session.setAttribute("user", user);
-		return "item_list_curry";
+		return "forward:/";
 	}
 }
