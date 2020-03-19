@@ -4,6 +4,10 @@ $(function(){
 		AjaxZip3.zip2addr('zipcode','','address','address');
 	});
 	
+	$('#findDestinationAddress').on('click',function(){
+		AjaxZip3.zip2addr('destinationZipcode','','destinationAddress','destinationAddress');
+	});
+	
 	//商品金額
 	$('.size').on('change', function(){
 		calcName();
@@ -27,7 +31,7 @@ $(function(){
 		if(size === 'M'){
 			sizePrice = $('#priceM').val();
 			toppingPrice = 200 * topping;
-		}else{
+		}else if(size === 'L'){
 			sizePrice = $('#priceL').val();
 			toppingPrice = 300 * topping;
 		}
