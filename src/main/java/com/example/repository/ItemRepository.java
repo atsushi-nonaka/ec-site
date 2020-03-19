@@ -50,11 +50,30 @@ public class ItemRepository {
 		return itemList;
 	}
 	
+	/**
+	 * 商品を名前から検索して表示させる.
+	 * 
+	 * @param itemName アイテム名
+	 * @return アイテムリスト
+	 */
 	public List<Item> findByName(String itemName){
 		String sql = "SELECT id, name, description, price_m, price_l, image_path, deleted "
 					+ "FROM items WHERE name ILIKE :itemName ORDER BY name";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("itemName", "%" + itemName + "%");
 		List<Item>itemList = template.query(sql, param, ITEM_ROW_MAPPER);
 		return itemList;
+	}
+	
+	/**
+	 * idごとの商品を表示させる..
+	 * 
+	 * @return 商品詳細
+	 */
+	public Item findById(Integer id){
+		String sql = "SELECT id, name, description, price_m, price_l, image_path, deleted "
+					+ "FROM items WHERE id = :id";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+		Item item = template.queryForObject(sql, param, ITEM_ROW_MAPPER);
+		return item;
 	}
 }
