@@ -65,6 +65,6 @@ public class RegisterUserController {
 		User user = new User();
 		BeanUtils.copyProperties(form, user);
 		service.registerUser(user);
-		return "forward:/login";
+		return "redirect:/to_login";
 	}
 }

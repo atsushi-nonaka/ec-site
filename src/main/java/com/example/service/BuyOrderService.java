@@ -55,16 +55,41 @@ public class BuyOrderService {
 	 * @return 配達日のタイムスタンプ型
 	 */
 	public Timestamp stringToTimestamp(OrderForm form) {
-		System.out.println(form);
-		String deliveryTime = form.getDeliveryTime();
-		String deliveryDate = form.getDeliveryDate();
-		
-		LocalDate date = LocalDate.parse(deliveryDate);
-		LocalTime time = LocalTime.parse(deliveryTime + ":00:00");
-		
-		LocalDateTime dateTime = LocalDateTime.of(date, time);
-		
-		Timestamp stamp = Timestamp.valueOf(dateTime);
+		Timestamp stamp = Timestamp.valueOf(localDateAndLocalTimeToLocalTimeDate(stringToLocalDate(form.getDeliveryDate()), stringToLocalTime(form.getDeliveryTime())));
 		return stamp;
+	}
+	
+	/**
+	 * 配達日をString型からLocalDate型に変換する.
+	 * 
+	 * @param form 注文フォーム
+	 * @return 配達日
+	 */
+	public LocalDate stringToLocalDate(String deliveryDate) {
+		LocalDate date = LocalDate.parse(deliveryDate);
+		return date;
+	}
+	
+	/**
+	 * 配達時間をString型からLocalTime型に変換する.
+	 * 
+	 * @param form 注文フォーム
+	 * @return 配達時間
+	 */
+	public LocalTime stringToLocalTime(String deliveryTime) {
+		LocalTime time = LocalTime.parse(deliveryTime + ":00:00");
+		return time;
+	}
+	
+	/**
+	 * LocalDateとLocalTimeからLocalDateTimeに変換する.
+	 * 
+	 * @param date 配達日
+	 * @param time 配達時間
+	 * @return 配達日時
+	 */
+	public LocalDateTime localDateAndLocalTimeToLocalTimeDate(LocalDate date, LocalTime time) {
+		LocalDateTime dateTime = LocalDateTime.of(date, time);
+		return dateTime;
 	}
 }

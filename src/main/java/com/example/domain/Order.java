@@ -169,4 +169,33 @@ public class Order {
 				+ destinationAddress + ", destinationTel=" + destinationTel + ", deliveryTime=" + deliveryTime
 				+ ", paymentMethod=" + paymentMethod + ", user=" + user + ", orderItemList=" + orderItemList + "]";
 	}
+	
+	/**
+	 * 商品合計の税金の合計を計算する.
+	 * 
+	 * @return 消費税の合計金額
+	 */
+	public int getTax() {
+		int totalTax = 0;
+		List<OrderItem> orderItemList = getOrderItemList();
+		for(OrderItem orderItem : orderItemList) {
+			totalTax += (int)(orderItem.getSubTotal() * 0.1);
+		}
+		return totalTax;
+	}
+	
+	/**
+	 * 商品合計の金額を計算する.
+	 * 
+	 * @return 商品の合計金額
+	 */
+	public int getCalcTotalPrice() {
+		int subTotalPrice = 0;
+		List<OrderItem> orderItemList = getOrderItemList();
+		for(OrderItem orderItem : orderItemList) {
+			subTotalPrice += orderItem.getSubTotal();
+		}
+		
+		return subTotalPrice + getTax();
+	}
 }

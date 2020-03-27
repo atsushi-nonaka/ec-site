@@ -41,7 +41,6 @@ public class ShowItemDetailController {
 		List<Topping> toppingList = showToppingListService.findAll();
 		model.addAttribute("item", item);
 		model.addAttribute("toppingList", toppingList);
-		System.out.println(toppingList);
 		return "item_detail";
 	}
 }

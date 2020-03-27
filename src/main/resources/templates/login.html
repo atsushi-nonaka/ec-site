@@ -55,14 +55,14 @@
 							<div class="form-group">
 								<label for="inputEmail">メールアドレス:</label>
 								<label
-									class="control-label" style="color: red" for="inputError" th:errors="*{mailAddress}"></label>
+									class="control-label" style="color: red" for="inputError" th:text="${mailAddress}"></label>
 								<input type="text" name="mailAddress" id="inputEmail" class="form-control"
 									placeholder="Email">
 							</div>
 							<div class="form-group">
 								<label for="inputPassword">パスワード:</label>
 								<label
-									class="control-label" style="color: red" for="inputError" th:errors="*{password}"></label>
+									class="control-label" style="color: red" for="inputError"></label>
 								<input type="text" name="password" id="inputPassword" class="form-control"
 									placeholder="Password">
 							</div>
