@@ -50,9 +50,9 @@
 		<div class="row">
 			<div
 				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
-				<h3 class="text-center">ショッピングカート</h3>
-				<table class="table table-striped item-list-table" th:unless="${order==null}" >
-					<tbody>
+				<h3 class="text-center">注文履歴</h3>
+				<table class="table table-striped item-list-table" th:unless="${orderList==null}" >
+					<tbody  th:each = "order : ${orderList}">
 						<tr>
 							<th>
 								<div class="text-center" >
@@ -71,13 +71,16 @@
 							</th>
 							<th>
 								<div class="text-center">
-									小計
+									購入日
 								</div>
 							</th>
 							<th>
+								<div class="text-center">
+									小計
+								</div>
 							</th>
 						</tr>
-						<tr th:each = "orderItem : ${order.orderItemList}">
+						<tr th:each ="orderItem : ${order.orderItemList}">
 							<td>
 								<div class="center">
 									<img th:src="'/img_curry/' + ${orderItem.item.imagePath}"
@@ -99,12 +102,14 @@
 							</td>
 							<td>
 								<div class="text-center">
-									<span th:text="${orderItem.subTotal} + '円'"></span>
+									<span th:text="${order.orderDate}"></span>
 								</div>
 							</td>
 							<td>
-
-							</td>
+								<div class="text-center">
+									<span th:text="${orderItem.subTotal} + '円'"></span>
+								</div>
+							</td>							
 						</tr>
 					</tbody>
 				</table>
