@@ -37,7 +37,6 @@ public class OrderHistoryController {
 	public String showOrderHistory(Model model) {
 		List<Order> orderList = service.findOrderHistory((Integer)session.getAttribute("userId"));
 		model.addAttribute("orderList", orderList);
-		System.out.println(orderList);
 		return "order_history";
 	}
 }

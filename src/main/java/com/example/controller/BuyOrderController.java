@@ -71,6 +71,7 @@ public class BuyOrderController {
 			return toOrderConfirm(model);
 		}
 		
+		
 		service.orderComplete(form);
 		return "order_finished";
 	}

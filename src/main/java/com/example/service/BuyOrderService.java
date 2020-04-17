@@ -8,6 +8,8 @@ import java.time.LocalTime;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,9 @@ public class BuyOrderService {
 	@Autowired
 	private OrderRepository repository;
 	
+	@Autowired
+	private MailSender sender;
+	
 	/**
 	 * 注文完了するためにアップデートする.
 	 * 
@@ -46,6 +51,7 @@ public class BuyOrderService {
 			order.setPaymentMethod(2);
 		}
 		repository.update(order);
+		sendMail(order);
 	}
 	
 	/**
@@ -91,5 +97,19 @@ public class BuyOrderService {
 	public LocalDateTime localDateAndLocalTimeToLocalTimeDate(LocalDate date, LocalTime time) {
 		LocalDateTime dateTime = LocalDateTime.of(date, time);
 		return dateTime;
+	}
+	
+	/**
+	 * メールの送信を行う.
+	 * 
+	 * @param order 注文情報
+	 */
+	public void sendMail(Order order) {
+		SimpleMailMessage msg = new SimpleMailMessage();
+		msg.setFrom("test@gmail.com");
+		msg.setTo(order.getDestinationEmail());
+		msg.setSubject("テストメール");
+		msg.setText("ご注文ありがとうございます");
+		sender.send(msg);
 	}
 }

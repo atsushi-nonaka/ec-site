@@ -37,7 +37,7 @@ $( function() {
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="item_list.html"> <!-- 企業ロゴ --> <img
+					<a class="navbar-brand" th:href="@{/}"> <!-- 企業ロゴ --> <img
 						alt="main log" th:src="@{/img_curry/header_logo.png}" height="35">
 					</a>
 				</div>
@@ -75,6 +75,9 @@ $( function() {
 								</div>
 							</div>
 							<div class="text-center">
+								<!-- 
+								<input type="radio" name="price" value="1">価格の低い順
+								<input type="radio" name="price" value="2">価格の高い順 -->
 								<button type="submit" value="検索" class="btn btn-primary">検索</button>
 								<button type="reset" value="クリア" class="btn btn-default">クリア</button>
 							</div>
@@ -90,8 +93,8 @@ $( function() {
 				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
 				<div th:text="${notFind}"></div>
 				<table class="table table-striped">
-					<tbody th:each="item : ${itemList}">
-						<tr>
+					<tbody>
+						<tr th:each="item : ${itemPage.content}">
 							<th>
 								<a th:href="@{'/show_item_detail?id=' + ${item.id}}">
 									<img th:src="'/img_curry/' + ${item.imagePath}"
@@ -104,6 +107,13 @@ $( function() {
 						</tr>
 					</tbody>
 				</table>
+				<!-- ページング機能 -->
+				<div th:text=${itemPage}></div>
+				<div th:if="${itemPage.totalPages > 0}" class="pagination" th:each="pageNumber : ${pageNumbers}">
+				    <a th:href="@{'/search/?page=' + ${pageNumber}}"
+				        th:text=${pageNumber}
+				        th:class="${pageNumber==itemPage.number + 1} ? active"></a>
+				</div>
 
 			</div>
 		</div>

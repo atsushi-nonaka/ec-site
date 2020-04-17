@@ -37,6 +37,17 @@ $(function(){
 		}
 		totalPrice = quantity * (parseInt(sizePrice) + toppingPrice);
 		$('#totalPrice').html(totalPrice.toLocaleString());
-	}
+	};
+	
+	//クレジット決済について
+	$(".inputCreditInformation").hide();
+	
+	$("#card").on("change", function(){
+		$(".inputCreditInformation").show();
+	});
+	
+	$("#cash").on("change", function(){
+		$(".inputCreditInformation").hide();
+	});
 		
 });

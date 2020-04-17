@@ -2,6 +2,8 @@ package com.example.form;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  * ユーザー情報を格納するためのフォーム.
@@ -18,7 +20,7 @@ public class UserForm {
 	@NotBlank(message = "メールアドレスを入力してください")
 	private String email;
 	/** パスワード */
-	@NotBlank(message = "パスワードを入力してください")
+	@Pattern(regexp = "^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\\d)[a-zA-Z\\d]{8,32}$", message="8桁以上32桁以外で設定してください")
 	private String password;
 	/** 確認用パスワード */
 	@NotBlank(message = "確認用パスワードを入力してください")

@@ -32,10 +32,29 @@ public class SearchItemService {
 	public List<Item> findItemListByName(String itemName, Model model){
 		List<Item> itemList = repository.findByName(itemName);
 		if(itemList.size() == 0) {
-			itemList = repository.findAll();
-			model.addAttribute("notFind", "該当する商品がありません");
-			return  itemList;
+			itemList = repository.findAllByLowPrice();
 		}
+		return itemList;
+	}
+	
+	
+	/**
+	 * 	価格が低い順に表示させる.
+	 * 
+	 * @return 商品リスト（価格が低い順）
+	 */
+	public List<Item> findItemListByLowPrice(){
+		List<Item> itemList = repository.findAllByLowPrice();
+		return itemList;
+	}
+	
+	/**
+	 * 	価格が高い順に表示させる.
+	 * 
+	 * @return 商品リスト（価格が高い順）
+	 */
+	public List<Item> findItemListByHighPrice(){
+		List<Item> itemList = repository.findAllByHighPrice();
 		return itemList;
 	}
 

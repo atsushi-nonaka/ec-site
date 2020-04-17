@@ -26,7 +26,7 @@
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="item_list.html"> <!-- 企業ロゴ --> <img
+					<a class="navbar-brand" th:href="@{/}"> <!-- 企業ロゴ --> <img
 						alt="main log"  th:src="@{/img_curry/header_logo.png}" height="35">
 					</a>
 				</div>
@@ -86,7 +86,7 @@
 									placeholder="Tel" th:field="*{telephone}">
 							</div>
 							<div class="form-group">
-								<label for="inputPassword">パスワード:</label>
+								<label for="inputPassword">パスワード:(大文字,小文字,数字を1文字以上含めた8-32桁に設定してください)</label>
 								<label
 									class="control-label" style="color: red" for="inputError" th:errors="*{password}"></label>
 								<input type="password" name="password" id="inputPassword" class="form-control"
