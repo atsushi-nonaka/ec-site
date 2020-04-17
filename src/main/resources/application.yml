@@ -13,3 +13,10 @@ spring:
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
+   
+  batch:
+    # Database schema initialization mode.
+    initialize-schema: always
+    # Path to the SQL file to use to initialize the database schema.
+    schema: classpath:schema-all.sql
+  

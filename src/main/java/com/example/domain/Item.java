@@ -25,6 +25,49 @@ public class Item {
 	private Boolean deleted;
 	/** トッピングリスト */
 	private List<Topping> toppingList;
+	
+	public Item() {}
+
+	/**
+	 * @param id
+	 * @param name
+	 * @param description
+	 * @param priceM
+	 * @param priceL
+	 * @param imagePath
+	 * @param deleted
+	 * @param toppingList
+	 */
+	public Item(Integer id, String name, String description, Integer priceM, Integer priceL, String imagePath,
+			Boolean deleted, List<Topping> toppingList) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.priceM = priceM;
+		this.priceL = priceL;
+		this.imagePath = imagePath;
+		this.deleted = deleted;
+		this.toppingList = toppingList;
+	}
+
+	/**
+	 * @param name
+	 * @param description
+	 * @param priceM
+	 * @param priceL
+	 * @param imagePath
+	 * @param deleted
+	 * @param toppingList
+	 */
+	public Item(String name, String description, Integer priceM, Integer priceL, String imagePath, Boolean deleted) {
+		this.name = name;
+		this.description = description;
+		this.priceM = priceM;
+		this.priceL = priceL;
+		this.imagePath = imagePath;
+		this.deleted = deleted;
+		this.toppingList = toppingList;
+	}
 
 	public Integer getId() {
 		return id;
