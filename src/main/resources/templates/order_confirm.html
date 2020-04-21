@@ -288,7 +288,7 @@
 							<tr>
 								<td>
 									<div class="text-center">
-										クレジットカード決済
+										クレジットカード決済<span th:text=${error}></span>
 									</div>
 								</td>
 								<td align="center">
@@ -296,7 +296,7 @@
 										<div class="col-sm-12">
 											<label class="radio-inline">
 												<input type="radio" id="card"
-													name="paymentMethod" checked="checked" th:value="card">
+													name="paymentMethod" th:value="card">
 												クレジットカード
 											</label><br><br>
 										</div>
@@ -306,6 +306,7 @@
 							<tr class="inputCreditInformation">
 								<td class="text-center">
 									クレジットカード番号
+									<span id="companyName"></span>
 								</td>
 								<td>
 									<input id="creditNumber" type="text" name="card_number" >
@@ -321,7 +322,7 @@
 							    	</option>
 									</select>
 									<select name="card_exp_year">
-							    	<option th:each="i : ${#numbers.sequence(2020, 2038)}" th:value="${i}" th:text="${i}">
+							    	<option th:each="i : ${#numbers.sequence(2020, 2040)}" th:value="${i}" th:text="${i}">
 							    	</option>
 							    	</select>
 								</td>
@@ -353,6 +354,8 @@
 					</div>
 				</div>
 			</div>
+			<input type="hidden" name="order_number" th:value="${order.id}">
+			<input type="hidden" name="amount" th:value="${order.totalPrice}" >
 		</form>
 	</div>
 	<!-- end container -->

@@ -12,9 +12,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.domain.CreditCard;
 import com.example.domain.Order;
+import com.example.form.CreditCardForm;
 import com.example.form.OrderForm;
 import com.example.service.BuyOrderService;
+import com.example.service.CreditCardService;
 import com.example.service.ShowCartListService;
 
 /**
@@ -32,6 +35,9 @@ public class BuyOrderController {
 	
 	@Autowired
 	private ShowCartListService showCartListService;
+	
+	@Autowired
+	private CreditCardService creditCardService;
 	
 	@Autowired
 	private HttpSession session;
@@ -61,7 +67,7 @@ public class BuyOrderController {
 	 * @return 注文完了画面
 	 */
 	@RequestMapping("/order_finish")
-	public String orderComplete(@Validated OrderForm form, BindingResult result, Model model) {
+	public String orderComplete(@Validated OrderForm form, BindingResult result, Model model, CreditCardForm creditCardForm) {
 	
 		if(!(form.getDeliveryDate().equals("")) && service.localDateAndLocalTimeToLocalTimeDate(service.stringToLocalDate(form.getDeliveryDate()), service.stringToLocalTime(form.getDeliveryTime())).isBefore(LocalDateTime.now())) {
 			result.rejectValue("deliveryDate", null, "配達日が以前に日時になっています");
@@ -71,6 +77,15 @@ public class BuyOrderController {
 			return toOrderConfirm(model);
 		}
 		
+		CreditCard creditCard = null;
+		if ("credit".equals(form.getPaymentMethod())) {
+			creditCard = creditCardService.getCreditCard(creditCardForm);
+			if ("error".equals(creditCard.getStatus())) {
+				model.addAttribute("error", "入力されたカード情報は不正です。");
+				System.out.println(creditCard);
+				return toOrderConfirm(model);
+			}
+		}
 		
 		service.orderComplete(form);
 		return "order_finished";

@@ -40,7 +40,7 @@ public class LoginService {
 		String hashedPassowrd = repository.findUserByEmail(email).getPassword();
 		
 		if(passwordEncoder.matches(password, hashedPassowrd)) {
-			user = repository.findUserByEmailAndPassword(email, password);			
+			user = repository.findUserByEmailAndPassword(email, hashedPassowrd);			
 		}
 		return user;
 	}

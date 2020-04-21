@@ -57,14 +57,15 @@
 								<label
 									class="control-label" style="color: red" for="inputError" th:text="${mailAddress}"></label>
 								<input type="text" name="mailAddress" id="inputEmail" class="form-control"
-									placeholder="Email">
+									placeholder="Email" autocomplete="off">
 							</div>
 							<div class="form-group">
 								<label for="inputPassword">パスワード:</label>
 								<label
 									class="control-label" style="color: red" for="inputError"></label>
-								<input type="text" name="password" id="inputPassword" class="form-control"
-									placeholder="Password">
+								<input type="password" name="password" id="inputPassword" class="form-control"
+									placeholder="Password" autocomplete="off">
+						        <input type="checkbox" id="password-check">パスワードを表示する
 							</div>
 							<div class="form-group">
 								<button type="submit" class="btn btn-primary">ログイン</button>

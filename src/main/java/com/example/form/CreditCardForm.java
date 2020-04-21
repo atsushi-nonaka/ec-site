@@ -1,5 +1,11 @@
 package com.example.form;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.CreditCardNumber;
+
 /**
  * クレジットカード情報が入るフォーム.
  * 
@@ -14,14 +20,18 @@ public class CreditCardForm {
 	/** 決済金額 */
 	private Integer amount;
 	/** クレジットカード番号 */
+	@CreditCardNumber(message = "クレジットカード番号が正しくありません")
 	private Integer card_number;
 	/** カード有効期限（年） */
 	private Integer card_exp_year;
 	/** カード有効期限（月） */
 	private Integer card_exp_month;
 	/** カード名義人 */
+	@NotBlank(message = "名前を入力してください")
+	@Pattern(regexp = "^[A-Z]$", message="名前は大文字で入力してください")
 	private String card_name;
 	/** セキュリティーコード */
+	@Size(min=3, max=4, message="セキュリティーコードはAmex以外は3桁(Amexは4桁です)")
 	private Integer card_cvv;
 
 	public Integer getUser_id() {

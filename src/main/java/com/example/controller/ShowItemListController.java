@@ -30,7 +30,6 @@ public class ShowItemListController {
 	@RequestMapping("")
 	public String showItemList(Model model, Integer page) {
 		List<Item> itemList = service.showItemList();
-		model.addAttribute("itemList", itemList);
 		
 		// ページング機能追加
 		if (page == null) {

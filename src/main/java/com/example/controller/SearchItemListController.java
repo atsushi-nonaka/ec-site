@@ -33,15 +33,17 @@ public class SearchItemListController {
 	
 	@RequestMapping("/search")
 	public String findItemListByName(String price, Integer page, String itemName, Model model) {
-		List<Item> itemList = service.findItemListByName(itemName, model);
+		List<Item> itemList = new ArrayList<>();
 		
-//		if("1".equals(price)) {
-//			itemList = service.findItemListByLowPrice();
-//		}else if("2".equals(price)) {
-//			itemList = service.findItemListByHighPrice();
-//		}
+		if("1".equals(price)) {
+			itemList = service.findItemListByLowPrice();
+		}else if("2".equals(price)) {
+			itemList = service.findItemListByHighPrice();
+		}
 		
-		model.addAttribute("itemList", itemList);
+		if(itemList.size() == 0) {
+			itemList = service.findItemListByName(itemName, model);
+		}
 		
 		// ページング機能追加
 		if (page == null) {
