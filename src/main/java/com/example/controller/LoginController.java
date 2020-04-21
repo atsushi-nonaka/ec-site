@@ -29,19 +29,4 @@ public class LoginController {
 		}
 		return "login";
 	}
-	
-//	@RequestMapping("/login")
-//	public String login(@Validated LoginForm form, BindingResult result) {
-//		User user = service.findUserByEmailAndPassword(form.getMailAddress(), form.getPassword());
-//		if(form.getMailAddress() != null && form.getPassword() != null &&  user == null) {
-//			result.rejectValue("mailAddress", null, "メールアドレスまたはパスワードが一致しません");
-//		}
-//		
-//		if(result.hasErrors()) {
-//			return toLogin();
-//		}
-//		
-//		session.setAttribute("userId", user.getId());
-//		return "forward:/";
-//	}
 }

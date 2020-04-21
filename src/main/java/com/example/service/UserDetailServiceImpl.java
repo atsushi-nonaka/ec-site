@@ -60,22 +60,16 @@ public class UserDetailServiceImpl implements UserDetailsService{
 					order2.setUserId(user.getId());
 					
 					order2 = orderRepository.insert(order2);
-					System.out.println("order2=" + order2);
 				}
 				
 				//データベース上にログインユーザの注文情報があるときその注文Idを取得し
 				//sessionIDの注文ID→ログインユーザの注文IDに更新する。
 				Integer loginUsersOrderId = order2.getId();
-				System.out.println("hashedOrderId="+hashedOrderId);
-				System.out.println("loginUsersOrderId="+loginUsersOrderId);
 				orderItemRepository.updateOrderIdByOrderId(hashedOrderId, loginUsersOrderId);
 				//ハッシュ(sessionID)の注文情報をDBから消す
 				orderRepository.delete(order.getId());
 				//金額揃える
-				System.out.println("元々の金額"+order2.getTotalPrice());
 				order2.setTotalPrice(order2.getTotalPrice()+order.getTotalPrice());
-				System.out.println("調整後の金額"+order2.getTotalPrice());
-				System.out.println(order2);
 				orderRepository.update(order2);				 
 			}
 		}

@@ -288,8 +288,9 @@
 							<tr>
 								<td>
 									<div class="text-center">
-										クレジットカード決済<span th:text=${error}></span>
+										クレジットカード決済
 									</div>
+									<div class="text-center" th:text=${error} style="color: red"></div>
 								</td>
 								<td align="center">
 									<div class="row">
@@ -309,7 +310,7 @@
 									<span id="companyName"></span>
 								</td>
 								<td>
-									<input id="creditNumber" type="text" name="card_number" >
+									<input id="creditNumber" type="text" name="cardNumber" >
 								</td>
 							</tr>
 							<tr class="inputCreditInformation">
@@ -317,11 +318,11 @@
 									有効期限
 								</td>
 								<td>
-									<select name="card_exp_month">
+									<select name="cardExpMonth">
 							   		 <option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}">
 							    	</option>
 									</select>
-									<select name="card_exp_year">
+									<select name="cardExpYear">
 							    	<option th:each="i : ${#numbers.sequence(2020, 2040)}" th:value="${i}" th:text="${i}">
 							    	</option>
 							    	</select>
@@ -332,7 +333,7 @@
 								カード名義人
 								</td>
 								<td>
-									<input id="creditUserName" type="text" name="card_name" >
+									<input id="creditUserName" type="text" name="cardName" >
 								</td>
 							</tr>
 							<tr class="inputCreditInformation">
@@ -340,7 +341,7 @@
 									セキュリティーコード
 								</td>
 								<td>
-									<input id="creditSecurityCode" type="password" name="card_cvv" >
+									<input id="creditSecurityCode" type="password" name="cardCvv" >
 								</td>
 							</tr>
 						</tbody>
@@ -354,8 +355,9 @@
 					</div>
 				</div>
 			</div>
-			<input type="hidden" name="order_number" th:value="${order.id}">
-			<input type="hidden" name="amount" th:value="${order.totalPrice}" >
+			<input type="hidden" name="orderNumber" th:value="${order.id}">
+			<input type="hidden" name="amount" th:value="${order.totalPrice}">
+			<input type="hidden" name="userId" th:value="${session.userId}">
 		</form>
 	</div>
 	<!-- end container -->

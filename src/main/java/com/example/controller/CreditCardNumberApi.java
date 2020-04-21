@@ -52,17 +52,17 @@ public class CreditCardNumberApi {
 		Matcher masterMatcher = masterPattern.matcher(creditNumber);	
 
 		if(amexMatcher.matches()) {
-			companyName = "AMEX";
+			companyName = "：AMEX";
 		}else if(dinersMatcher.matches()) {
-			companyName = "DINERS";
+			companyName = "：DINERS";
 		}else if(jcbMatcher.matches()) {
-			companyName = "JCB";  
+			companyName = "：JCB";  
 		}else if(visaMatcher.matches()) {
-			companyName = "VISA";
+			companyName = "：VISA";
 		}else if(masterMatcher.matches()) {
-			companyName = "MASTER";
+			companyName = "：MASTER";
 		}else {
-			companyName = "Don't exist";
+			companyName = "：Don't exist";
 		}
 		map.put("companyName", companyName);
 		return map;

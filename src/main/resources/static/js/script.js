@@ -75,6 +75,7 @@ $(function(){
 		
 });
 
+	//パスワードをテキスト＝パスワード表示に変更する機能
 	const pwd = document.getElementById('inputPassword');
 	const pwdCheck = document.getElementById('password-check');
 	pwdCheck.addEventListener('change', function() {

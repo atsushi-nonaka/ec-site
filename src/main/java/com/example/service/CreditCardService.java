@@ -22,7 +22,7 @@ public class CreditCardService {
 	@Autowired
 	private RestTemplate restTemplate;
 
-	private static final String URL = " http://172.16.0.13:8080/web-api-sample/credit-card/payment";
+	private static final String URL = "http://192.168.11.7:8080/creditcard-payment/";
 
 
 	@Bean
@@ -30,7 +30,7 @@ public class CreditCardService {
 	    return new RestTemplate();
 	}
 	
-	public CreditCard getCreditCard( CreditCardForm creditCardForm) {
+	public CreditCard getCreditCard(CreditCardForm creditCardForm) {
         return restTemplate.postForObject(URL,creditCardForm, CreditCard.class);
     }
 }

@@ -14,95 +14,95 @@ import org.hibernate.validator.constraints.CreditCardNumber;
  */
 public class CreditCardForm {
 	/** 利用者ID */
-	private Integer user_id;
+	private String userId;
 	/** 注文NO */
-	private Integer order_number;
+	private String orderNumber;
 	/** 決済金額 */
-	private Integer amount;
+	private String amount;
 	/** クレジットカード番号 */
 	@CreditCardNumber(message = "クレジットカード番号が正しくありません")
-	private Integer card_number;
+	private String cardNumber;
 	/** カード有効期限（年） */
-	private Integer card_exp_year;
+	private String cardExpYear;
 	/** カード有効期限（月） */
-	private Integer card_exp_month;
+	private String cardExpMonth;
 	/** カード名義人 */
 	@NotBlank(message = "名前を入力してください")
-	@Pattern(regexp = "^[A-Z]$", message="名前は大文字で入力してください")
-	private String card_name;
+	@Pattern(regexp = "^[A-Z]$", message = "名前は大文字で入力してください")
+	private String cardName;
 	/** セキュリティーコード */
-	@Size(min=3, max=4, message="セキュリティーコードはAmex以外は3桁(Amexは4桁です)")
-	private Integer card_cvv;
+	@Size(min = 3, max = 4, message = "セキュリティーコードはAmex以外は3桁(Amexは4桁です)")
+	private String cardCvv;
 
-	public Integer getUser_id() {
-		return user_id;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUser_id(Integer user_id) {
-		this.user_id = user_id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
-	public Integer getOrder_number() {
-		return order_number;
+	public String getOrderNumber() {
+		return orderNumber;
 	}
 
-	public void setOrder_number(Integer order_number) {
-		this.order_number = order_number;
+	public void setOrderNumber(String orderNumber) {
+		this.orderNumber = orderNumber;
 	}
 
-	public Integer getAmount() {
+	public String getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Integer amount) {
+	public void setAmount(String amount) {
 		this.amount = amount;
 	}
 
-	public Integer getCard_number() {
-		return card_number;
+	public String getCardNumber() {
+		return cardNumber;
 	}
 
-	public void setCard_number(Integer card_number) {
-		this.card_number = card_number;
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
 	}
 
-	public Integer getCard_exp_year() {
-		return card_exp_year;
+	public String getCardExpYear() {
+		return cardExpYear;
 	}
 
-	public void setCard_exp_year(Integer card_exp_year) {
-		this.card_exp_year = card_exp_year;
+	public void setCardExpYear(String cardExpYear) {
+		this.cardExpYear = cardExpYear;
 	}
 
-	public Integer getCard_exp_month() {
-		return card_exp_month;
+	public String getCardExpMonth() {
+		return cardExpMonth;
 	}
 
-	public void setCard_exp_month(Integer card_exp_month) {
-		this.card_exp_month = card_exp_month;
+	public void setCardExpMonth(String cardExpMonth) {
+		this.cardExpMonth = cardExpMonth;
 	}
 
-	public String getCard_name() {
-		return card_name;
+	public String getCardName() {
+		return cardName;
 	}
 
-	public void setCard_name(String card_name) {
-		this.card_name = card_name;
+	public void setCardName(String cardName) {
+		this.cardName = cardName;
 	}
 
-	public Integer getCard_cvv() {
-		return card_cvv;
+	public String getCardCvv() {
+		return cardCvv;
 	}
 
-	public void setCard_cvv(Integer card_cvv) {
-		this.card_cvv = card_cvv;
+	public void setCardCvv(String cardCvv) {
+		this.cardCvv = cardCvv;
 	}
 
 	@Override
 	public String toString() {
-		return "CreditCardForm [user_id=" + user_id + ", order_number=" + order_number + ", amount=" + amount
-				+ ", card_number=" + card_number + ", card_exp_year=" + card_exp_year + ", card_exp_month="
-				+ card_exp_month + ", card_name=" + card_name + ", card_cvv=" + card_cvv + "]";
+		return "CreditCardForm [userId=" + userId + ", orderNumber=" + orderNumber + ", amount=" + amount
+				+ ", cardNumber=" + cardNumber + ", cardExpYear=" + cardExpYear + ", cardExpMonth=" + cardExpMonth
+				+ ", cardName=" + cardName + ", cardCvv=" + cardCvv + "]";
 	}
 
 }

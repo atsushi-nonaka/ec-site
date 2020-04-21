@@ -68,7 +68,7 @@ public class BuyOrderController {
 	 */
 	@RequestMapping("/order_finish")
 	public String orderComplete(@Validated OrderForm form, BindingResult result, Model model, CreditCardForm creditCardForm) {
-	
+		System.out.println(creditCardForm);
 		if(!(form.getDeliveryDate().equals("")) && service.localDateAndLocalTimeToLocalTimeDate(service.stringToLocalDate(form.getDeliveryDate()), service.stringToLocalTime(form.getDeliveryTime())).isBefore(LocalDateTime.now())) {
 			result.rejectValue("deliveryDate", null, "配達日が以前に日時になっています");
 		}
@@ -78,16 +78,20 @@ public class BuyOrderController {
 		}
 		
 		CreditCard creditCard = null;
-		if ("credit".equals(form.getPaymentMethod())) {
+		if ("card".equals(form.getPaymentMethod())) {
 			creditCard = creditCardService.getCreditCard(creditCardForm);
 			if ("error".equals(creditCard.getStatus())) {
 				model.addAttribute("error", "入力されたカード情報は不正です。");
-				System.out.println(creditCard);
 				return toOrderConfirm(model);
 			}
 		}
 		
 		service.orderComplete(form);
+		return "redirect:/complete";
+	}
+	
+	@RequestMapping("/complete")
+	public String toOrderFinished() {
 		return "order_finished";
 	}
 }
