@@ -68,7 +68,6 @@ public class BuyOrderController {
 	 */
 	@RequestMapping("/order_finish")
 	public String orderComplete(@Validated OrderForm form, BindingResult result, Model model, CreditCardForm creditCardForm) {
-		System.out.println(creditCardForm);
 		if(!(form.getDeliveryDate().equals("")) && service.localDateAndLocalTimeToLocalTimeDate(service.stringToLocalDate(form.getDeliveryDate()), service.stringToLocalTime(form.getDeliveryTime())).isBefore(LocalDateTime.now())) {
 			result.rejectValue("deliveryDate", null, "配達日が以前に日時になっています");
 		}

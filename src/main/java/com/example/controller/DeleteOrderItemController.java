@@ -40,6 +40,9 @@ public class DeleteOrderItemController {
 	public String deleteOrderItem(Integer orderItemId) {
 		Order order = (Order)session.getAttribute("order");
 		OrderItem orderItem = null;
+		
+		//order.getOrderItemList().stream().filter(oi -> oi.getId().equals(orderItemId)).forEach(oi -> orderItem = oi);
+		
 		for(OrderItem oi:order.getOrderItemList()) {
 			if(oi.getId().equals(orderItemId)) {
 				orderItem = oi;
@@ -48,7 +51,6 @@ public class DeleteOrderItemController {
 		Integer subtotal = orderItem.getSubTotal();
 		
 		order.setTotalPrice(order.getCalcTotalPrice()-(int)(subtotal + subtotal * 0.1));
-		System.out.println(order.getTotalPrice());
 		deleteOrderItemService.deleteOrderTopping(orderItemId);
 		deleteOrderItemService.deleteOrderItem(orderItemId);
 		deleteOrderItemService.updateTotalPrice(order);

@@ -76,16 +76,26 @@ public class AddItemInCartService {
 		Integer orderItemId = orderItemRepository.insert(orderItem);
 		orderItem.setId(orderItemId);
 
+		//ラムダ式に変更
 		if (form.getToppingIdList() != null) {
 			List<OrderTopping> orderToppingList = new ArrayList<>();
-			for (String toppingId : form.getToppingIdList()) {
+			form.getToppingIdList().stream().forEach(toppingId -> {
 				OrderTopping orderTopping = new OrderTopping();
 				orderTopping.setToppingId(Integer.parseInt(toppingId));
 				orderTopping.setOrderItemId(orderItem.getId());
 				orderTopping.setTopping(toppingRepository.findByToppingId(Integer.parseInt(toppingId)));
 				orderToppingRepository.insert(orderTopping);
 				orderToppingList.add(orderTopping);
-			}
+			});
+			
+//			for (String toppingId : form.getToppingIdList()) {
+//				OrderTopping orderTopping = new OrderTopping();
+//				orderTopping.setToppingId(Integer.parseInt(toppingId));
+//				orderTopping.setOrderItemId(orderItem.getId());
+//				orderTopping.setTopping(toppingRepository.findByToppingId(Integer.parseInt(toppingId)));
+//				orderToppingRepository.insert(orderTopping);
+//				orderToppingList.add(orderTopping);
+//			}
 			orderItem.setOrderToppingList(orderToppingList);
 		}
 		

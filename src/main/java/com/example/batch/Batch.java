@@ -9,6 +9,7 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.step.tasklet.MethodInvokingTaskletAdapter;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
@@ -111,6 +112,38 @@ public class Batch {
 		return new JobStartEndListener(new JdbcTemplate(dataSource));
 	}
 	
+	/**
+	 * ステップの実行を構築するメソッドです.
+	 * @return
+	 */
+	@Bean
+	public Step truncateStep() {
+		return stepBuilderFactory.get("truncateStep")
+				.tasklet(truncateTasklet()).build();
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	@Bean
+	public MethodInvokingTaskletAdapter truncateTasklet() {
+		MethodInvokingTaskletAdapter adapter = new MethodInvokingTaskletAdapter();
+		adapter.setTargetObject(truncateService());
+		adapter.setTargetMethod("execute");
+		return adapter;
+	}
+
+	/**
+	 * TruncateStepの実行処理とそれが完了したことを通知する処理を返すメソッドです
+	 * @return
+	 */
+	@Bean
+	public TruncateService truncateService() {
+		return new TruncateServiceImpl();
+	}
+
+	
 	//ステップ1(item情報をDBに)
 	@Bean
 	public Step step1() {
@@ -139,7 +172,8 @@ public class Batch {
 		return jobBuilderFactory.get("importItemAndExportOrderJob")
 				.incrementer(new RunIdIncrementer())
 				.listener(listener())
-				.flow(step1())
+				.flow(truncateStep())
+				.next(step1())
 				.next(step2())
 				.end()
 				.build();
@@ -173,7 +207,6 @@ public class Batch {
 		String[] names = {"id", "userId" , "status", "totalPrice", "orderDate", "destinationName", "destinationEmail", "destinationZipcode", "destinationAddress", 
 							"destinationTel", "deliveryTime", "paymentMethod", "user"};
 		return names;
-	}
-	
+	}	
 	
 }

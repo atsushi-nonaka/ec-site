@@ -1,7 +1,6 @@
 package com.example.repository;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -41,6 +40,7 @@ public class OrderRepository {
 	public static final RowMapper<Order> ORDER_ROW_MAPPER = (rs, i) -> {
 		Order order = new Order();
 		order.setId(rs.getInt("id"));
+		order.setOrder_number(rs.getString("order_number"));
 		order.setUserId(rs.getInt("user_id"));
 		order.setStatus(rs.getInt("status"));
 		order.setTotalPrice(rs.getInt("total_price"));
@@ -69,6 +69,7 @@ public class OrderRepository {
 			if(beforeOrderId != nowOrderId) {
 				Order order = new Order();
 				order.setId(rs.getInt("o_id"));
+				order.setOrder_number(rs.getString("o_order_number"));
 				order.setUserId(rs.getInt("o_user_id"));
 				order.setStatus(rs.getInt("o_status"));
 				order.setTotalPrice(rs.getInt("o_total_price"));
@@ -189,7 +190,7 @@ public class OrderRepository {
 	 */
 	public Order checkByUserIdAndStatus(Integer userId) {
 		try {
-			String sql = "select id,user_id,status,total_price,order_date,destination_name,destination_email,destination_zipcode,destination_address,destination_tel,delivery_time,payment_method from orders where user_id = :userId and status = 0";
+			String sql = "select id, order_number, user_id,status,total_price,order_date,destination_name,destination_email,destination_zipcode,destination_address,destination_tel,delivery_time,payment_method from orders where user_id = :userId and status = 0";
 			SqlParameterSource param = new MapSqlParameterSource().addValue("userId", userId).addValue("status", 0);
 			Order order = template.queryForObject(sql, param, ORDER_ROW_MAPPER);
 			return order;
@@ -205,7 +206,7 @@ public class OrderRepository {
 	 * @return 注文情報
 	 */
 	public Order findOrderedItem(Integer userId){
-		String sql = "SELECT o.id o_id, o.user_id o_user_id, o.status o_status, o.total_price o_total_price, o.order_date o_order_date, "
+		String sql = "SELECT o.id o_id, o.order_number o_order_number, o.user_id o_user_id, o.status o_status, o.total_price o_total_price, o.order_date o_order_date, "
 					+ "o.destination_name o_destination_name, o.destination_email o_destination_email, o.destination_zipcode o_destination_zipcode, "
 					+ "o.destination_address o_destination_address, o.destination_tel o_destination_tel, o.delivery_time o_delivery_time, o.payment_method o_payment_method, "
 					+ "u.id u_id, u.name u_name, u.email u_email, u.password u_password, u.zipcode u_zipcode, u.address u_address, u.telephone u_telephone, "
@@ -238,7 +239,7 @@ public class OrderRepository {
 	 * @return 注文情報
 	 */
 	public List<Order> findOrderHistory(Integer userId){
-		String sql = "SELECT o.id o_id, o.user_id o_user_id, o.status o_status, o.total_price o_total_price, o.order_date o_order_date, "
+		String sql = "SELECT o.id o_id, o.order_number o_order_number, o.user_id o_user_id, o.status o_status, o.total_price o_total_price, o.order_date o_order_date, "
 				+ "o.destination_name o_destination_name, o.destination_email o_destination_email, o.destination_zipcode o_destination_zipcode, "
 				+ "o.destination_address o_destination_address, o.destination_tel o_destination_tel, o.delivery_time o_delivery_time, o.payment_method o_payment_method, "
 				+ "u.id u_id, u.name u_name, u.email u_email, u.password u_password, u.zipcode u_zipcode, u.address u_address, u.telephone u_telephone, "
@@ -261,6 +262,19 @@ public class OrderRepository {
 		}
 		return orderList;
 		
+	}
+	
+	
+	/**
+	 * 注文情報の全件検索.
+	 * 
+	 * @return 全件入りの注文リスト
+	 */
+	public List<Order> findAllOrder(){
+		String sql = "SELECT id, order_number, user_id,status,total_price,order_date,destination_name,destination_email, "
+					+ "destination_zipcode,destination_address,destination_tel,delivery_time,payment_method FROM orders";
+		List<Order> orderList = template.query(sql, ORDER_ROW_MAPPER);
+		return orderList;
 	}
 	
 	/**
