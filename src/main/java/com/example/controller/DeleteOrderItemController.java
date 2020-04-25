@@ -1,5 +1,9 @@
 package com.example.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,15 +45,12 @@ public class DeleteOrderItemController {
 		Order order = (Order)session.getAttribute("order");
 		OrderItem orderItem = null;
 		
-		//order.getOrderItemList().stream().filter(oi -> oi.getId().equals(orderItemId)).forEach(oi -> orderItem = oi);
-		
 		for(OrderItem oi:order.getOrderItemList()) {
 			if(oi.getId().equals(orderItemId)) {
 				orderItem = oi;
 			}
 		}
 		Integer subtotal = orderItem.getSubTotal();
-		
 		order.setTotalPrice(order.getCalcTotalPrice()-(int)(subtotal + subtotal * 0.1));
 		deleteOrderItemService.deleteOrderTopping(orderItemId);
 		deleteOrderItemService.deleteOrderItem(orderItemId);

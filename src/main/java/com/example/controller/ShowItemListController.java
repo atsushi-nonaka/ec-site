@@ -31,20 +31,16 @@ public class ShowItemListController {
 	public String showItemList(Model model, Integer page) {
 		List<Item> itemList = service.showItemList();
 		
-		// ページング機能追加
 		if (page == null) {
-			// ページ数の指定が無い場合は1ページ目を表示させる
 			page = 1;
 		}
+		model.addAttribute("page", page);
 		
-		// 表示させたいページ数、ページサイズ、従業員リストを渡し１ページに表示させる従業員リストを絞り込み
 		Page<Item> itemPage = service.showListPaging(page, VIEW_SIZE, itemList);
 		model.addAttribute("itemPage", itemPage);
-		// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
 		List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
 		model.addAttribute("pageNumbers", pageNumbers);
 		
-		// オートコンプリート用にJavaScriptの配列の中身を文字列で作ってスコープへ格納
 		StringBuilder itemListForAutocomplete = service.getItemListForAutocomplete(itemList);
 		model.addAttribute("itemListForAutocomplete", itemListForAutocomplete);
 		return "item_list_curry";

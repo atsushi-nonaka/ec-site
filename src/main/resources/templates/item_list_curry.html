@@ -108,7 +108,7 @@ $( function() {
 					</tbody>
 				</table>
 				<!-- ページング機能 -->
-				<div th:text=${itemPage}></div>
+				<div th:text=" 'Page Number' + ${page} + '/' + ${itemPage.totalPages}"></div>
 				<div th:if="${itemPage.totalPages > 0}" class="pagination" th:each="pageNumber : ${pageNumbers}">
 				    <a th:href="@{'/search/?page=' + ${pageNumber}}"
 				        th:text=${pageNumber}

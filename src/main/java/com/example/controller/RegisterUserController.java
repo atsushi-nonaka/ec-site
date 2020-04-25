@@ -51,7 +51,7 @@ public class RegisterUserController {
 		String password = form.getPassword();
 		String checkPassword = form.getCheckPassword();
 		
-		if(password != null && checkPassword != null && !(password.equals(checkPassword))) {
+		if(!(password.isEmpty()) && !(checkPassword.isEmpty()) && !(password.equals(checkPassword))) {
 			result.rejectValue("checkPassword", null, "確認用パスワードが一致していません");
 		}
 		

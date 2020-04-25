@@ -3,6 +3,8 @@ package com.example.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -29,36 +31,35 @@ public class SearchItemListController {
 	@Autowired
 	private ShowItemListService showItemListService;
 	
+	@Autowired
+	private HttpSession session;
+	
 	private final static int VIEW_SIZE = 9;
 	
 	@RequestMapping("/search")
 	public String findItemListByName(String price, Integer page, String itemName, Model model) {
 		List<Item> itemList = new ArrayList<>();
 		
-		if("1".equals(price)) {
-			itemList = service.findItemListByLowPrice();
-		}else if("2".equals(price)) {
-			itemList = service.findItemListByHighPrice();
-		}
-		
-		if(itemList.size() == 0) {
+		if(itemList.isEmpty()) {
 			itemList = service.findItemListByName(itemName, model);
 		}
 		
-		// ページング機能追加
-		if (page == null) {
-			// ページ数の指定が無い場合は1ページ目を表示させる
-			page = 1;
+		if(session.getAttribute("itemName") != null) {
+			itemName = (String) session.getAttribute("itemName");
+			itemList = service.findItemListByName(itemName, model);
 		}
 		
-		// 表示させたいページ数、ページサイズ、従業員リストを渡し１ページに表示させる従業員リストを絞り込み
+		if (page == null) {
+			page = 1;
+		}
+		model.addAttribute("page", page);
+		session.setAttribute("itemName", itemName);
+		
 		Page<Item> itemPage = showItemListService.showListPaging(page, VIEW_SIZE, itemList);
 		model.addAttribute("itemPage", itemPage);
-		// ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
 		List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
 		model.addAttribute("pageNumbers", pageNumbers);
 		
-		// オートコンプリート用にJavaScriptの配列の中身を文字列で作ってスコープへ格納
 		StringBuilder itemListForAutocomplete = showItemListService.getItemListForAutocomplete(itemList);
 		model.addAttribute("itemListForAutocomplete", itemListForAutocomplete);
 				
