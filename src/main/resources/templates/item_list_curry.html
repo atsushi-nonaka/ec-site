@@ -18,7 +18,7 @@
 $( function() {
 	  var availableTags = [ [(${itemListForAutocomplete})] ];
 
-	  $( "#itemName" ).autocomplete({
+	  $( "#name" ).autocomplete({
 	    source: availableTags
 	  });
 } );
@@ -66,20 +66,23 @@ $( function() {
 						<div class="panel-title">商品を検索する</div>
 					</div>
 					<div class="panel-body">
-						<form method="post" th:action="@{/search}" class="form-horizontal">
+						<form method="post" th:action="@{/search}" class="form-horizontal" th:object="${itemForm}">
 							<div class="form-group">
+								<div th:if="${message}" th:text="${message}" style="color :green" class="text-center"></div>
 								<label for="code" class="control-label col-sm-2">商品名</label>
 								<div class="col-sm-9">
-									<input type="text" name="itemName" id="itemName"
-										class="form-control input-sm" th:value="${itemName}">
+									<input type="text" name="name" id="name"
+										class="form-control input-sm" th:field="*{name}">
 								</div>
 							</div>
 							<div class="text-center">
-								<!-- 
-								<input type="radio" name="price" value="1">価格の低い順
-								<input type="radio" name="price" value="2">価格の高い順 -->
-								<button type="submit" value="検索" class="btn btn-primary">検索</button>
-								<button type="reset" value="クリア" class="btn btn-default">クリア</button>
+								<button type="submit" value="検索" class="btn btn-warning">検索</button>
+								<button type="reset" name="resetbtn" value="クリア" class="btn btn-default">クリア</button>
+								<select name="highLow">
+								<option th:value="1">安い順</option>
+								<option th:value="2">高い順</option>
+								</select>
+								
 							</div>
 						</form>
 					</div>
@@ -92,29 +95,29 @@ $( function() {
 			<div
 				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
 				<div th:text="${notFind}"></div>
-				<table class="table table-striped">
-					<tbody>
-						<tr th:each="item : ${itemPage.content}">
-							<th>
-								<a th:href="@{'/show_item_detail?id=' + ${item.id}}">
-									<img th:src="'/img_curry/' + ${item.imagePath}"
-										class="img-responsive img-rounded" width="200" height="600">
-								</a><br>
-								<a th:href="@{'/show_item_detail?id=' + ${item.id}}" th:text="${item.name}">じゃがバターベーコン</a><br>
-								<span class="price">&nbsp;М&nbsp;</span><span th:text="'&nbsp;&nbsp' + ${#numbers.formatInteger(item.priceM, 2, 'COMMA')} + '円(税抜)'">&nbsp;&nbsp;1,380円(税抜)</span><br>
-								<span class="price">&nbsp;Ｌ</span><span th:text="'&nbsp;&nbsp' + ${#numbers.formatInteger(item.priceL, 2, 'COMMA')} + '円(税抜)'">&nbsp;&nbsp;2,380円(税抜)</span><br>
-							</th>
-						</tr>
-					</tbody>
-				</table>
+					<table class="table table-striped">
+						<tbody th:each="itemListList:${bigThreeList}">
+							<tr >
+								<th th:each="itemList:${itemListList}" class="showlist">
+								<span th:each="item :${itemList}">
+								 <a href="item_detail.html" th:href="@{'/show_item_detail?id=' + ${item.id}}">
+									<img th:src="${'/img_curry/' + item.imagePath}"
+											class="disp-block blockcenter" width="200" height="200">
+									</a><br> 
+									<a href="item_detail.html" th:href="@{'/show_item_detail?id=' + ${item.id}}"><span  th:text="${item.name}"></span></a><br>
+									<span class="price">&nbsp;М&nbsp;</span>&nbsp;&nbsp;<span th:text="${#numbers.formatInteger(item.priceM,2,'COMMA')}"></span>円(税抜)<br>
+									<span class="price">&nbsp;L &nbsp;</span>&nbsp;&nbsp;<span th:text="${#numbers.formatInteger(item.priceL,2,'COMMA')}"></span>円(税抜)<br>
+								</span>
+								</th>
+							</tr>
+					</table>
 				<!-- ページング機能 -->
-				<div th:text=" 'Page Number' + ${page} + '/' + ${itemPage.totalPages}"></div>
-				<div th:if="${itemPage.totalPages > 0}" class="pagination" th:each="pageNumber : ${pageNumbers}">
-				    <a th:href="@{'/search/?page=' + ${pageNumber}}"
-				        th:text=${pageNumber}
-				        th:class="${pageNumber==itemPage.number + 1} ? active"></a>
+				<div style="display: inline" th:each="bigThreeList,status:${superItemList}">
+					<ul class="pagination">
+						<li class="pre" style="color:#808080;font-size: 26px"><a th:if="${pattern1 == 1}" th:text="${status.count}"  th:href="@{'?page='+${status.count}}"></a></li> 
+						<li class="pre" style="color:#808080;font-size: 26px"><a th:if="${pattern2 == 1}" th:href="@{/search(page=${status.count},name=${name}, highLow=${highLow})}" th:text="${status.count}" ></a></li>
+					</ul>
 				</div>
-
 			</div>
 		</div>
 	</div>

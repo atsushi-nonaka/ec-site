@@ -2,16 +2,14 @@ package com.example.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.domain.Item;
+import com.example.form.ItemForm;
 import com.example.service.SearchItemService;
 import com.example.service.ShowItemListService;
 
@@ -24,64 +22,75 @@ import com.example.service.ShowItemListService;
 @Controller
 @RequestMapping("")
 public class SearchItemListController {
-	
+
 	@Autowired
 	private SearchItemService service;
-	
+
 	@Autowired
 	private ShowItemListService showItemListService;
 	
-	@Autowired
-	private HttpSession session;
-	
-	private final static int VIEW_SIZE = 9;
-	
-	@RequestMapping("/search")
-	public String findItemListByName(String price, Integer page, String itemName, Model model) {
-		List<Item> itemList = new ArrayList<>();
-		
-		if(itemList.isEmpty()) {
-			itemList = service.findItemListByName(itemName, model);
-		}
-		
-		if(session.getAttribute("itemName") != null) {
-			itemName = (String) session.getAttribute("itemName");
-			itemList = service.findItemListByName(itemName, model);
-		}
-		
-		if (page == null) {
-			page = 1;
-		}
-		model.addAttribute("page", page);
-		session.setAttribute("itemName", itemName);
-		
-		Page<Item> itemPage = showItemListService.showListPaging(page, VIEW_SIZE, itemList);
-		model.addAttribute("itemPage", itemPage);
-		List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
-		model.addAttribute("pageNumbers", pageNumbers);
-		
-		StringBuilder itemListForAutocomplete = showItemListService.getItemListForAutocomplete(itemList);
-		model.addAttribute("itemListForAutocomplete", itemListForAutocomplete);
-				
-		return "item_list_curry";
+	@ModelAttribute
+	private ItemForm setUpForm() {
+		return new ItemForm();
 	}
-	
-	/**
-	 * ページングのリンクに使うページ数をスコープに格納 (例)28件あり1ページにつき10件表示させる場合→1,2,3がpageNumbersに入る
-	 * 
-	 * @param model        モデル
-	 * @param employeePage ページング情報
-	 */
-	private List<Integer> calcPageNumbers(Model model, Page<Item> itemPage) {
-		int totalPages = itemPage.getTotalPages();
-		List<Integer> pageNumbers = null;
-		if (totalPages > 0) {
-			pageNumbers = new ArrayList<Integer>();
-			for (int i = 1; i <= totalPages; i++) {
-				pageNumbers.add(i);
+
+	@RequestMapping("/search")
+	public String findItemListByName(Integer page, ItemForm itemForm, Model model) {
+		List<Item> itemList = new ArrayList<>();
+		if (itemForm.getHighLow().equals("1")) {
+			itemList = service.findItemListByLowPrice(itemForm.getName());
+		} else if (itemForm.getHighLow().equals("2")) {
+			itemList = service.findItemListByHighPrice(itemForm.getName());
+		}
+		if (itemList.isEmpty()) {
+			itemList = showItemListService.showItemList();
+			model.addAttribute("message", "該当する商品がございません");
+		}
+		//条件検索したItemオブジェクトが3つずつ格納されたリスト
+		List<List<Item>> itemListList = putThreeItemsListInList(itemList);
+		List<List<Item>> bigThreeList = new ArrayList<>();
+		List<List<List<Item>>> superItemList = new ArrayList<>();
+		for (int i = 0; i < itemListList.size(); i++) {
+			bigThreeList.add(itemListList.get(i));
+			if (bigThreeList.size() == 2) {
+				superItemList.add(bigThreeList);
+				bigThreeList = new ArrayList<>();
 			}
 		}
-		return pageNumbers;
+		if (bigThreeList.size() != 0) {
+			superItemList.add(bigThreeList);
+		}
+		StringBuilder itemListForAutocomplete = showItemListService.getItemListForAutocomplete(itemList);
+		model.addAttribute("itemListForAutocomplete", itemListForAutocomplete);
+		Integer index = 0;
+		if(page != null) {
+			index = page -1;
+		}
+		model.addAttribute("superItemList", superItemList);
+		model.addAttribute("bigThreeList", superItemList.get(index));
+		model.addAttribute("name", itemForm.getName());
+		model.addAttribute("pattern2", 1);
+		model.addAttribute("highLow", itemForm.getHighLow());
+		return "item_list_curry";
 	}
-	
+
+	/**
+	 * Itemオブジェクトを3つずつリストに入れそのリストオブジェクト群を大枠のリスト格納する.
+	 * 
+	 * @param itemList 検索して取得したItemオブジェクト群
+	 * @return リストの中にアイテムオブジェクトを入れたリストを格納し返します
+	 */
+	private List<List<Item>> putThreeItemsListInList(List<Item> itemList) {
+		List<List<Item>> itemListList = new ArrayList<>();
+		List<Item> smallitemList = new ArrayList<>();
+		for (int i = 1; i <= itemList.size(); i++) {
+			smallitemList.add(itemList.get(i - 1));
+			if (smallitemList.size() % 3 == 0 || itemList.size() == i) {
+				itemListList.add(smallitemList);
+				smallitemList = new ArrayList<>();
+			}
+		}
+		return itemListList;
+	}
+
 }

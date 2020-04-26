@@ -31,8 +31,8 @@ public class SearchItemService {
 	 */
 	public List<Item> findItemListByName(String itemName, Model model){
 		List<Item> itemList = repository.findByName(itemName);
-		if(itemList.size() == 0) {
-			itemList = repository.findAllByLowPrice();
+		if(itemList.isEmpty()) {
+			itemList = repository.findAllByLowPrice(itemName);
 		}
 		return itemList;
 	}
@@ -43,8 +43,11 @@ public class SearchItemService {
 	 * 
 	 * @return 商品リスト（価格が低い順）
 	 */
-	public List<Item> findItemListByLowPrice(){
-		List<Item> itemList = repository.findAllByLowPrice();
+	public List<Item> findItemListByLowPrice(String itemName){
+		List<Item> itemList = repository.findAllByLowPrice(itemName);
+		if(itemList.isEmpty()) {
+			itemList = repository.findAllByLowPrice(itemName);
+		}
 		return itemList;
 	}
 	
@@ -53,8 +56,11 @@ public class SearchItemService {
 	 * 
 	 * @return 商品リスト（価格が高い順）
 	 */
-	public List<Item> findItemListByHighPrice(){
-		List<Item> itemList = repository.findAllByHighPrice();
+	public List<Item> findItemListByHighPrice(String itemName){
+		List<Item> itemList = repository.findAllByHighPrice(itemName);
+		if(itemList.isEmpty()) {
+			itemList = repository.findAllByLowPrice(itemName);
+		}
 		return itemList;
 	}
 
