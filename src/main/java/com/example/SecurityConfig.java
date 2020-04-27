@@ -1,3 +1,4 @@
+
 package com.example;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests() // 認可に関する設定
 		.antMatchers("/", "to_login", "/register_user", "/to_register_use", "/search", "/item_into_cart", "/show_cart_list", "/show_item_detail", "/delete_order_item").permitAll() //「/」などのパスは全てのユーザに許可
-		.antMatchers("/order_confirm", "/order_finish").hasRole("USER"); // /user/から始まるパスはUSER権限でログインしている場合のみアクセス可(権限設定時の「ROLE_」を除いた文字列を指定)
+		.antMatchers("/order_confirm", "/order_finish").hasRole("USER")// /user/から始まるパスはUSER権限でログインしている場合のみアクセス可(権限設定時の「ROLE_」を除いた文字列を指定)
+		.antMatchers("/admin/**").hasRole("ADMIN");
 	
 		http.formLogin() // ログインに関する設定
 		.loginPage("/to_login") // ログイン画面に遷移させるパス(ログイン認証が必要なパスを指定してかつログインされていないとこのパスに遷移される)

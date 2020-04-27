@@ -195,7 +195,7 @@ public class Batch {
 	 * @return 注文情報を表すSQL
 	 */
 	public String orderSql() {
-		String sql = "SELECT o.id o_id, o.user_id o_user_id, o.status o_status, o.total_price o_total_price, o.order_date o_order_date, "
+		String sql = "SELECT o.order_number o_order_number, o.user_id o_user_id, o.status o_status, o.total_price o_total_price, o.order_date o_order_date, "
 					+ "o.destination_name o_destination_name, o.destination_email o_destination_email, o.destination_zipcode o_destination_zipcode, "
 					+ "o.destination_address o_destination_address, o.destination_tel o_destination_tel, o.delivery_time o_delivery_time, o.payment_method o_payment_method, "
 					+ "u.id u_id, u.name u_name, u.email u_email, u.password u_password, u.zipcode u_zipcode, u.address u_address, u.telephone u_telephone  FROM orders o "
@@ -204,7 +204,7 @@ public class Batch {
 	}
 	
 	public String[] setNames() {
-		String[] names = {"id", "userId" , "status", "totalPrice", "orderDate", "destinationName", "destinationEmail", "destinationZipcode", "destinationAddress", 
+		String[] names = {"orderNumber", "userId" , "status", "totalPrice", "orderDate", "destinationName", "destinationEmail", "destinationZipcode", "destinationAddress", 
 							"destinationTel", "deliveryTime", "paymentMethod", "user"};
 		return names;
 	}	

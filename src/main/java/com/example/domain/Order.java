@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,11 +17,10 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
+@JsonPropertyOrder({"注文番号", "宛先氏名", "宛先Eメール", "宛先郵便番号", "宛先住所", ""})
 public class Order {
-	/** OrderID */
-	private Integer id;
 	/** 注文番号 */
-	private String order_number;
+	private Long orderNumber;
 	/** UserID */
 	private Integer userId;
 	/**

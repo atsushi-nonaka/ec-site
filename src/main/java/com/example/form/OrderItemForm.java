@@ -18,6 +18,8 @@ public class OrderItemForm {
 	private String itemId;
 	/** 数量 */
 	private String quantity;
+	/** 注文番号 */
+	private Integer orderNumber;
 	/** サイズ */
 	private String size;
 	/** トッピングリスト */

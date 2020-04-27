@@ -48,7 +48,8 @@ $( function() {
 					<p class="navbar-text navbar-right">
 						<a href="cart_list.html" th:href="@{/show_cart_list}" class="navbar-link">ショッピングカート</a>&nbsp;&nbsp;
 						<span sec:authorize="hasRole('ROLE_USER')"><a href="/order_history" class="navbar-link">注文履歴</a>&nbsp;&nbsp;</span>
-						<span sec:authorize="!isAuthenticated()"><a href="/to_login" class="navbar-link">ログイン</a>&nbsp;&nbsp;</span>
+						<span sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin/order_list" class="navbar-link">注文情報</a>&nbsp;&nbsp;</span>
+						<span sec:authorize="!isAuthenticated()"><a th:href="@{/to_login}" class="navbar-link">ログイン</a>&nbsp;&nbsp;</span>
 						<span sec:authorize="hasRole('ROLE_USER')"><a href="/logout" class="navbar-link">ログアウト</a></span>
 					</p>
 				</div>

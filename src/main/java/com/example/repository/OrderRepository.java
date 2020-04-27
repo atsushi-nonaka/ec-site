@@ -1,5 +1,6 @@
 package com.example.repository;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +40,7 @@ public class OrderRepository {
 	
 	public static final RowMapper<Order> ORDER_ROW_MAPPER = (rs, i) -> {
 		Order order = new Order();
-		order.setId(rs.getInt("id"));
-		order.setOrder_number(rs.getString("order_number"));
+		order.setOrderNumber(rs.getLong("order_number"));
 		order.setUserId(rs.getInt("user_id"));
 		order.setStatus(rs.getInt("status"));
 		order.setTotalPrice(rs.getInt("total_price"));
@@ -60,16 +60,15 @@ public class OrderRepository {
 		List<OrderItem> orderItemList = null;
 		List<OrderTopping> orderToppingList = null;
 		List<Topping> toppingList = null;
-		int beforeOrderId = 0;
+		long beforeOrderId = 0;
 		int beforeOrderItemId = 0;
 		while(rs.next()) {
-			int nowOrderId = rs.getInt("o_id");
+			long nowOrderId = rs.getLong("o_order_number");
 			int nowOrderItemId = rs.getInt("oi_id");
 
 			if(beforeOrderId != nowOrderId) {
 				Order order = new Order();
-				order.setId(rs.getInt("o_id"));
-				order.setOrder_number(rs.getString("o_order_number"));
+				order.setOrderNumber(rs.getLong("o_order_number"));
 				order.setUserId(rs.getInt("o_user_id"));
 				order.setStatus(rs.getInt("o_status"));
 				order.setTotalPrice(rs.getInt("o_total_price"));
@@ -90,6 +89,7 @@ public class OrderRepository {
 				user.setZipcode(rs.getString("u_zipcode"));
 				user.setAddress(rs.getString("u_address"));
 				user.setTelephone(rs.getString("u_telephone"));
+				user.setAdmin(rs.getBoolean("u_admin"));
 				
 				order.setUser(user);
 				order.setOrderItemList(orderItemList);
@@ -100,7 +100,7 @@ public class OrderRepository {
 				OrderItem orderItem = new OrderItem();
 				orderItem.setId(rs.getInt("oi_id"));
 				orderItem.setItemId(rs.getInt("oi_item_id"));
-				orderItem.setOrderId(rs.getInt("oi_order_id"));
+				orderItem.setOrderNumber(rs.getLong("oi_order_number"));
 				orderItem.setQuantity(rs.getInt("oi_quantity"));
 				orderItem.setSize(rs.getString("oi_size"));
 				orderToppingList = new ArrayList<>();
@@ -151,7 +151,7 @@ public class OrderRepository {
 	public void init() {
 		SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert((JdbcTemplate) template.getJdbcOperations());
 		SimpleJdbcInsert withTableName = simpleJdbcInsert.withTableName("orders");
-		insert = withTableName.usingGeneratedKeyColumns("id");
+		insert = withTableName.usingGeneratedKeyColumns("order_number");
 	}
 	
 	/**
@@ -165,7 +165,7 @@ public class OrderRepository {
 		SqlParameterSource param = new MapSqlParameterSource().addValue("userId", order.getUserId()).addValue("status", 0).addValue("totalPrice", 0);
 		
 		Number key = insert.executeAndReturnKey(param);
-		order.setId(key.intValue());
+		order.setOrderNumber(key.longValue());
 		return order;
 	}
 	
@@ -190,7 +190,7 @@ public class OrderRepository {
 	 */
 	public Order checkByUserIdAndStatus(Integer userId) {
 		try {
-			String sql = "select id, order_number, user_id,status,total_price,order_date,destination_name,destination_email,destination_zipcode,destination_address,destination_tel,delivery_time,payment_method from orders where user_id = :userId and status = 0";
+			String sql = "SELECT order_number, user_id,status,total_price,order_date,destination_name,destination_email,destination_zipcode,destination_address,destination_tel,delivery_time,payment_method FROM orders WHERE user_id = :userId and status = 0";
 			SqlParameterSource param = new MapSqlParameterSource().addValue("userId", userId).addValue("status", 0);
 			Order order = template.queryForObject(sql, param, ORDER_ROW_MAPPER);
 			return order;
@@ -206,16 +206,16 @@ public class OrderRepository {
 	 * @return 注文情報
 	 */
 	public Order findOrderedItem(Integer userId){
-		String sql = "SELECT o.id o_id, o.order_number o_order_number, o.user_id o_user_id, o.status o_status, o.total_price o_total_price, o.order_date o_order_date, "
+		String sql = "SELECT o.order_number o_order_number, o.user_id o_user_id, o.status o_status, o.total_price o_total_price, o.order_date o_order_date, "
 					+ "o.destination_name o_destination_name, o.destination_email o_destination_email, o.destination_zipcode o_destination_zipcode, "
 					+ "o.destination_address o_destination_address, o.destination_tel o_destination_tel, o.delivery_time o_delivery_time, o.payment_method o_payment_method, "
-					+ "u.id u_id, u.name u_name, u.email u_email, u.password u_password, u.zipcode u_zipcode, u.address u_address, u.telephone u_telephone, "
-					+ "oi.id oi_id, oi.item_id oi_item_id, oi.order_id oi_order_id, oi.quantity oi_quantity, oi.size oi_size, "
+					+ "u.id u_id, u.name u_name, u.email u_email, u.password u_password, u.zipcode u_zipcode, u.address u_address, u.telephone u_telephone, u.admin u_admin, "
+					+ "oi.id oi_id, oi.item_id oi_item_id, oi.order_number oi_order_number, oi.quantity oi_quantity, oi.size oi_size, "
 					+ "i.id i_id, i.name i_name, i.description i_description, i.price_m i_price_m, i.price_l i_price_l, i.image_path i_image_path, i.deleted i_deleted, "
 					+ "ot.id ot_id, ot.topping_id ot_topping_id, ot.order_item_id ot_order_item_id, "
 					+ "t.id t_id, t.name t_name, t.price_m t_price_m, t.price_l t_price_l "
 					+ "FROM orders o LEFT OUTER JOIN users u ON o.user_id = u.id "
-					+ "LEFT OUTER JOIN order_items oi ON o.id = oi.order_id "
+					+ "LEFT OUTER JOIN order_items oi ON o.order_number = oi.order_number "
 					+ "LEFT OUTER JOIN items i ON oi.item_id = i.id "
 					+ "LEFT OUTER JOIN order_toppings ot ON ot.order_item_id = oi.id "
 					+ "LEFT OUTER JOIN toppings t ON t.id = ot.topping_id "
@@ -239,16 +239,16 @@ public class OrderRepository {
 	 * @return 注文情報
 	 */
 	public List<Order> findOrderHistory(Integer userId){
-		String sql = "SELECT o.id o_id, o.order_number o_order_number, o.user_id o_user_id, o.status o_status, o.total_price o_total_price, o.order_date o_order_date, "
+		String sql = "SELECT o.order_number o_order_number, o.user_id o_user_id, o.status o_status, o.total_price o_total_price, o.order_date o_order_date, "
 				+ "o.destination_name o_destination_name, o.destination_email o_destination_email, o.destination_zipcode o_destination_zipcode, "
 				+ "o.destination_address o_destination_address, o.destination_tel o_destination_tel, o.delivery_time o_delivery_time, o.payment_method o_payment_method, "
-				+ "u.id u_id, u.name u_name, u.email u_email, u.password u_password, u.zipcode u_zipcode, u.address u_address, u.telephone u_telephone, "
-				+ "oi.id oi_id, oi.item_id oi_item_id, oi.order_id oi_order_id, oi.quantity oi_quantity, oi.size oi_size, "
+				+ "u.id u_id, u.name u_name, u.email u_email, u.password u_password, u.zipcode u_zipcode, u.address u_address, u.telephone u_telephone, u.admin u_admin "
+				+ "oi.id oi_id, oi.item_id oi_item_id, oi.order_number oi_order_number, oi.quantity oi_quantity, oi.size oi_size, "
 				+ "i.id i_id, i.name i_name, i.description i_description, i.price_m i_price_m, i.price_l i_price_l, i.image_path i_image_path, i.deleted i_deleted, "
 				+ "ot.id ot_id, ot.topping_id ot_topping_id, ot.order_item_id ot_order_item_id, "
 				+ "t.id t_id, t.name t_name, t.price_m t_price_m, t.price_l t_price_l "
 				+ "FROM orders o LEFT OUTER JOIN users u ON o.user_id = u.id "
-				+ "LEFT OUTER JOIN order_items oi ON o.id = oi.order_id "
+				+ "LEFT OUTER JOIN order_items oi ON o.order_number = oi.order_number "
 				+ "LEFT OUTER JOIN items i ON oi.item_id = i.id "
 				+ "LEFT OUTER JOIN order_toppings ot ON ot.order_item_id = oi.id "
 				+ "LEFT OUTER JOIN toppings t ON t.id = ot.topping_id "
@@ -271,7 +271,7 @@ public class OrderRepository {
 	 * @return 全件入りの注文リスト
 	 */
 	public List<Order> findAllOrder(){
-		String sql = "SELECT id, order_number, user_id,status,total_price,order_date,destination_name,destination_email, "
+		String sql = "SELECT order_number, user_id,status,total_price,order_date,destination_name,destination_email, "
 					+ "destination_zipcode,destination_address,destination_tel,delivery_time,payment_method FROM orders";
 		List<Order> orderList = template.query(sql, ORDER_ROW_MAPPER);
 		return orderList;
@@ -283,8 +283,8 @@ public class OrderRepository {
 	 * @param order 注文情報
 	 */
 	public void updateTotalPrice(Order order) {
-		String sql = "UPDATE orders SET total_price = :totalPrice WHERE id = :id";
-		SqlParameterSource param = new MapSqlParameterSource().addValue("totalPrice", order.getTotalPrice()).addValue("id", order.getId());
+		String sql = "UPDATE orders SET total_price = :totalPrice WHERE order_number = :orderNumber";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("totalPrice", order.getTotalPrice()).addValue("orderNumber", order.getOrderNumber());
 		template.update(sql, param);
 	}
 	

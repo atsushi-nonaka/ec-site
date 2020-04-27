@@ -45,7 +45,7 @@ public class OrderItemRepository {
 	 * @return 注文情報
 	 */
 	public Integer insert(OrderItem orderItem) {
-		String sql = "INSERT INTO order_items(item_id, order_id, quantity, size) VALUES(:itemId, :orderId, :quantity, :size)";
+		String sql = "INSERT INTO order_items(item_id, order_number, quantity, size) VALUES(:itemId, :orderNumber, :quantity, :size)";
 		SqlParameterSource param = new BeanPropertySqlParameterSource(orderItem);
 		
 		Number key = insert.executeAndReturnKey(param);
@@ -58,8 +58,8 @@ public class OrderItemRepository {
 	 * @param orderItem
 	 */
 	public Integer addItemInCart(OrderItem orderItem) {
-		String sql = "INSERT INTO order_items(item_id, order_id, quantity, size) "
-					+ "VALUES(:itemId, :orderId, :quantity, :size)";
+		String sql = "INSERT INTO order_items(item_id, order_number, quantity, size) "
+					+ "VALUES(:itemId, :orderNumber, :quantity, :size)";
 		SqlParameterSource param = new BeanPropertySqlParameterSource(orderItem);
 		template.update(sql, param);
 		
@@ -73,8 +73,8 @@ public class OrderItemRepository {
 	 * @param hashedId
 	 * @param loginUsersOrderId
 	 */
-	public void updateOrderIdByOrderId(Integer hashedId, Integer loginUsersOrderId) {
-		String sql = "UPDATE order_items SET order_id = :loginUsersOrderId WHERE order_id = :hashedId";
+	public void updateOrderIdByOrderId(Long hashedId, Long loginUsersOrderId) {
+		String sql = "UPDATE order_items SET order_number = :loginUsersOrderId WHERE order_number = :hashedId";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("hashedId", hashedId).addValue("loginUsersOrderId", loginUsersOrderId);
 		template.update(sql, param);
 	}

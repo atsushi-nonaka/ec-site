@@ -36,6 +36,7 @@ public class UserRepository {
 		user.setPassword(rs.getString("password"));
 		user.setTelephone(rs.getString("telephone"));
 		user.setZipcode(rs.getString("zipcode"));
+		user.setAdmin(rs.getBoolean("admin"));
 		return user;
 	};
 
@@ -45,8 +46,8 @@ public class UserRepository {
 	 * @param user ユーザー
 	 */
 	public void insert(User user) {
-		String sql = "INSERT INTO users(name, email, password, zipcode, address, telephone) " 
-				    + "VALUES(:name, :email, :password, :zipcode, :address, :telephone)";
+		String sql = "INSERT INTO users(name, email, password, zipcode, address, telephone, admin) " 
+				    + "VALUES(:name, :email, :password, :zipcode, :address, :telephone, :admin)";
 		SqlParameterSource param = new BeanPropertySqlParameterSource(user);
 		template.update(sql, param);
 	}
@@ -58,11 +59,11 @@ public class UserRepository {
 	 * @return ユーザーリスト or null
 	 */
 	public User findUserByEmail(String email) {
-		String sql = "SELECT id, name, email,password, zipcode, address, telephone "
+		String sql = "SELECT id, name, email,password, zipcode, address, telephone, admin "
 				    + "FROM users WHERE email = :email";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("email", email);
 		List<User> userList = template.query(sql, param, USER_ROW_MAPPER);
-		if(userList.size() == 0) {
+		if(userList.isEmpty()) {
 			return null;
 		}
 		return userList.get(0);
@@ -75,11 +76,11 @@ public class UserRepository {
 	 * @return ユーザーリスト or null
 	 */
 	public User findUserByEmailAndPassword(String email, String password) {
-		String sql = "SELECT id, name, email,password, zipcode, address, telephone "
+		String sql = "SELECT id, name, email,password, zipcode, address, telephone, admin "
 				    + "FROM users WHERE email = :email AND password = :password";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("email", email).addValue("password", password);
 		List<User> userList = template.query(sql, param, USER_ROW_MAPPER);
-		if(userList.size() == 0) {
+		if(userList.isEmpty()) {
 			return null;
 		}
 		return userList.get(0);

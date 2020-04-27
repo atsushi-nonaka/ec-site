@@ -19,7 +19,7 @@ public class OrderItem {
 	/** 商品ID */
 	private Integer itemId;
 	/** 注文ID */
-	private Integer orderId;
+	private Long orderNumber;
 	/** 数量 */
 	private Integer quantity;
 	/** サイズ */

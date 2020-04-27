@@ -26,4 +26,7 @@ public class User {
 	private String address;
 	/** 電話番号 */
 	private String telephone;
+	/** 権利者権限 */
+	private Boolean admin; 
+
 }

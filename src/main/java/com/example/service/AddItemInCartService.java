@@ -68,10 +68,11 @@ public class AddItemInCartService {
 		}						
 
 		OrderItem orderItem = new OrderItem();
+		System.out.println(form);
 		orderItem.setItemId(Integer.parseInt(form.getItemId()));
 		orderItem.setQuantity(Integer.parseInt(form.getQuantity()));
 		orderItem.setSize(form.getSize());
-		orderItem.setOrderId(order.getId());
+		orderItem.setOrderNumber(order.getOrderNumber());
 		orderItem.setItem(itemRepository.findById(orderItem.getItemId()));
 		Integer orderItemId = orderItemRepository.insert(orderItem);
 		orderItem.setId(orderItemId);

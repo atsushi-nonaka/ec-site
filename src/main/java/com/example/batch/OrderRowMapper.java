@@ -13,7 +13,7 @@ public class OrderRowMapper implements RowMapper<Order> {
 	@Override
 	public Order mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Order order = new Order();
-		order.setId(rs.getInt("o_id"));
+		order.setOrderNumber(rs.getLong("o_order_number"));
 		order.setUserId(rs.getInt("o_user_id"));
 		order.setStatus(rs.getInt("o_status"));
 		order.setTotalPrice(rs.getInt("o_total_price"));

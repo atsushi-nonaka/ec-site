@@ -44,13 +44,16 @@ public class UserDetailServiceImpl implements UserDetailsService{
 		
 		Collection<GrantedAuthority> authorityList = new ArrayList<>();
 		authorityList.add(new SimpleGrantedAuthority("ROLE_USER"));//ユーザー権限付与
+		if(user.getAdmin()) {
+           authorityList.add(new SimpleGrantedAuthority("ROLE_ADMIN")); // 管理者権限付与
+        }
 		
 		session.setAttribute("userId", user.getId());
 		
 		if(user != null) {
 			if(session.getAttribute("hashedOrder") != null) {
 				Order order = (Order) session.getAttribute("hashedOrder");
-				Integer hashedOrderId = order.getId();
+				Long hashedOrderId = order.getOrderNumber();
 				
 				Order order2 = orderRepository.checkByUserIdAndStatus(user.getId());
 				//未ログインで買い物→ログイン→ログイン時の買い物はしていない時(データベースでnull)
@@ -64,10 +67,10 @@ public class UserDetailServiceImpl implements UserDetailsService{
 				
 				//データベース上にログインユーザの注文情報があるときその注文Idを取得し
 				//sessionIDの注文ID→ログインユーザの注文IDに更新する。
-				Integer loginUsersOrderId = order2.getId();
+				Long loginUsersOrderId = order2.getOrderNumber();
 				orderItemRepository.updateOrderIdByOrderId(hashedOrderId, loginUsersOrderId);
 				//ハッシュ(sessionID)の注文情報をDBから消す
-				orderRepository.delete(order.getId());
+				orderRepository.delete(order.getUserId());
 				//金額揃える
 				order2.setTotalPrice(order2.getTotalPrice()+order.getTotalPrice());
 				orderRepository.update(order2);				 
