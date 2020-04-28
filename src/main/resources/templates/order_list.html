@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,8 +26,8 @@
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" th:href="@{/}"> <!-- 企業ロゴ -->
-						 <img alt="main log" th:src="@{/img_curry/header_logo.png}" height="35">
+					<a class="navbar-brand" th:href="@{/}"> <!-- 企業ロゴ --> <img
+						alt="main log" th:src="@{/img_curry/header_logo.png}" height="35">
 					</a>
 				</div>
 
@@ -34,8 +35,10 @@
 				<div class="collapse navbar-collapse"
 					id="bs-example-navbar-collapse-1">
 					<p class="navbar-text navbar-right">
-						<a href="cart_list.html" th:href="@{/show_cart_list}" class="navbar-link">ショッピングカート</a>&nbsp;&nbsp;
-						<span sec:authorize="hasRole('ROLE_USER')"><a href="/logout" class="navbar-link">ログアウト</a></span>
+						<a href="cart_list.html" th:href="@{/show_cart_list}"
+							class="navbar-link">ショッピングカート</a>&nbsp;&nbsp; <span
+							sec:authorize="hasRole('ROLE_USER')"><a href="/logout"
+							class="navbar-link">ログアウト</a></span>
 					</p>
 				</div>
 				<!-- /.navbar-collapse -->
@@ -49,38 +52,31 @@
 			<div
 				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
 				<h3 class="text-center">注文情報一覧画面</h3>
-				<table class="table table-striped item-list-table" th:unless="${orderList==null}" >
-					<tbody>
+				<table class="table table-striped item-list-table"
+					th:unless="${orderList==null}">
+					<thead >
 						<tr>
 							<th>
-								<div class="text-center" >
-									注文番号
-								</div>
+								<div class="text-center">注文番号</div>
 							</th>
 							<th>
-								<div class="text-center" >
-									日付
-								</div>
+								<div class="text-center">日付</div>
 							</th>
 							<th>
-								<div class="text-center">
-									利用者名
-								</div>
+								<div class="text-center">利用者名</div>
 							</th>
 							<th>
-								<div class="text-center">
-									現在のステータス名
-								</div>
+								<div class="text-center">現在のステータス名</div>
 							</th>
 							<th>
-								<div class="text-center">
-									総計（税込み）
-								</div>
+								<div class="text-center">総計（税込み）</div>
 							</th>
 						</tr>
-						<tr th:each ="order : ${orderList}">
+					</thead>
+					<tbody th:each="order : ${orderList}">
+						<tr>
 							<td>
-								<div class="center">
+								<div class="text-center">
 									<span th:text="${order.orderNumber}"></span>
 								</div>
 							</td>
@@ -103,18 +99,22 @@
 								<div class="text-center">
 									<span th:text="${order.totalPrice} + '円'"></span>
 								</div>
-							</td>					
+							</td>
 						</tr>
 					</tbody>
 				</table>
+				<form id="csvform" method="post" th:action="@{/download/csv}">
+					<input type="hidden" name="filename">
+					<button>送信</button>
+				</form>
 			</div>
 		</div>
 
-	<!-- end container -->
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
-	<script th:src="@{/js/script.js}"></script>
-	<script th:src="@{/js/bootstrap.min.js}"></script>
+		<!-- end container -->
+		<script
+			src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
+		<script th:src="@{/js/script.js}"></script>
+		<script th:src="@{/js/bootstrap.min.js}"></script>
 </body>
 </html>

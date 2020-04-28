@@ -33,4 +33,15 @@ public class OrderListService {
 		return orderList;
 	}
 	
+	/**
+	 * CSV出力に必要なデータを検索する.
+	 * 
+	 * @return 注文リスト
+	 */
+	@Autowired
+	public List<Order> findCsvData(){
+		List<Order> orderList = orderRepository.findOrder();
+		return orderList;
+	}
+	
 }

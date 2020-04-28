@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import lombok.Data;
@@ -17,7 +18,6 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@JsonPropertyOrder({"注文番号", "宛先氏名", "宛先Eメール", "宛先郵便番号", "宛先住所", ""})
 public class Order {
 	/** 注文番号 */
 	private Long orderNumber;
@@ -56,11 +56,14 @@ public class Order {
 	 * @return 消費税の合計金額
 	 */
 	public int getTax() {
-		int totalTax = 0;
+//		int totalTax = 0;
 		List<OrderItem> orderItemList = getOrderItemList();
-		for (OrderItem orderItem : orderItemList) {
-			totalTax += (int) (orderItem.getSubTotal() * 0.1);
-		}
+//		for (OrderItem orderItem : orderItemList) {
+//			totalTax += (int) (orderItem.getSubTotal() * 0.1);
+//		}
+		int totalTax = orderItemList.stream()
+											.mapToInt(oi -> (int)(oi.getSubTotal() * 0.1))
+											.sum();
 		return totalTax;
 	}
 

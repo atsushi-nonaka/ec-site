@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class OrderForm {
+	/** UserId */
+	private String userId;
 	/** 宛先氏名 */
 	@NotBlank(message = "名前が未入力です")
 	private String destinationName;

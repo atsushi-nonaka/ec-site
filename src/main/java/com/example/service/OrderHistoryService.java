@@ -28,8 +28,8 @@ public class OrderHistoryService {
 	 * @param userId ユーザーID
 	 * @return 注文履歴リスト
 	 */
-	public List<Order> findOrderHistory(Integer userId){
-		List<Order> orderList = orderRepository.findOrderHistory(userId);
+	public List<Order> findOrderHistory(Integer userId, boolean isJoin){
+		List<Order> orderList = orderRepository.findOrderHistory(userId, isJoin);
 		return orderList;
 	}
 }

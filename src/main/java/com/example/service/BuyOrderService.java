@@ -41,6 +41,7 @@ public class BuyOrderService {
 	public void orderComplete(OrderForm form) {
 		Order order = new Order();
 		BeanUtils.copyProperties(form, order);
+		order.setUserId(Integer.parseInt(form.getUserId()));
 		order.setOrderDate(Date.valueOf(LocalDate.now()));
 		order.setDeliveryTime(stringToTimestamp(form));
 		if(form.getPaymentMethod().equals("cash")) {
