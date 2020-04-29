@@ -73,11 +73,14 @@ public class Order {
 	 * @return 商品の合計金額
 	 */
 	public int getCalcTotalPrice() {
-		int subTotalPrice = 0;
+//		int subTotalPrice = 0;
 		List<OrderItem> orderItemList = getOrderItemList();
-		for (OrderItem orderItem : orderItemList) {
-			subTotalPrice += orderItem.getSubTotal();
-		}
+//		for (OrderItem orderItem : orderItemList) {
+//			subTotalPrice += orderItem.getSubTotal();
+//		}
+		int subTotalPrice = orderItemList.stream()
+												.mapToInt(oi -> oi.getSubTotal())
+												.sum();
 		return subTotalPrice + getTax();
 	}
 }
