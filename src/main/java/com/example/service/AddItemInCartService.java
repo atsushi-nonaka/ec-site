@@ -87,15 +87,6 @@ public class AddItemInCartService {
 				orderToppingRepository.insert(orderTopping);
 				orderToppingList.add(orderTopping);
 			});
-			
-//			for (String toppingId : form.getToppingIdList()) {
-//				OrderTopping orderTopping = new OrderTopping();
-//				orderTopping.setToppingId(Integer.parseInt(toppingId));
-//				orderTopping.setOrderItemId(orderItem.getId());
-//				orderTopping.setTopping(toppingRepository.findByToppingId(Integer.parseInt(toppingId)));
-//				orderToppingRepository.insert(orderTopping);
-//				orderToppingList.add(orderTopping);
-//			}
 			orderItem.setOrderToppingList(orderToppingList);
 		}
 		

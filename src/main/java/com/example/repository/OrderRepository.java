@@ -226,7 +226,6 @@ public class OrderRepository {
 				+ "destination_zipcode = :destinationZipcode, destination_address = :destinationAddress, "
 				+ "destination_tel = :destinationTel, delivery_time = :deliveryTime, payment_method = :paymentMethod WHERE user_id = :userId AND status = 0";
 		SqlParameterSource param = new BeanPropertySqlParameterSource(order);
-		System.out.println(order);
 		template.update(sql, param);
 	}
 
@@ -354,7 +353,7 @@ public class OrderRepository {
 					+ "WHERE o.user_id = :userId AND NOT status = :status ORDER BY o.order_date DESC";
 		} else {
 			sql = "SELECT order_number, user_id,status,total_price,order_date,destination_name,destination_email,destination_zipcode,"
-					+ "destination_address,destination_tel,delivery_time,payment_method FROM orders WHERE user_id = :userId AND status = :status";
+					+ "destination_address,destination_tel,delivery_time,payment_method FROM orders WHERE user_id = :userId AND NOT status = :status";
 		}
 
 		SqlParameterSource param = new MapSqlParameterSource().addValue("userId", userId).addValue("status", 0);
@@ -374,8 +373,10 @@ public class OrderRepository {
 	 */
 	public List<Order> findAllOrder() {
 		String sql = "SELECT order_number, user_id,status,total_price,order_date,destination_name,destination_email, "
-				+ "destination_zipcode,destination_address,destination_tel,delivery_time,payment_method FROM orders";
-		List<Order> orderList = template.query(sql, ORDER_ROW_MAPPER);
+				+ "destination_zipcode,destination_address,destination_tel,delivery_time,payment_method FROM orders "
+				+ "WHERE NOT status = :status";
+		SqlParameterSource param = new MapSqlParameterSource("status", 0);
+		List<Order> orderList = template.query(sql, param, ORDER_ROW_MAPPER);
 		return orderList;
 	}
 

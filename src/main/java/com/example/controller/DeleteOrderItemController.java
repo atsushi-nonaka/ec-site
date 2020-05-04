@@ -1,9 +1,5 @@
 package com.example.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.domain.Order;
 import com.example.domain.OrderItem;
-import com.example.service.AddItemInCartService;
 import com.example.service.DeleteOrderItemService;
 
 /**
@@ -29,9 +24,6 @@ public class DeleteOrderItemController {
 	private DeleteOrderItemService deleteOrderItemService;
 	
 	@Autowired
-	private AddItemInCartService addItemInCartService;
-	
-	@Autowired
 	private HttpSession session;
 	
 	/**
@@ -43,13 +35,17 @@ public class DeleteOrderItemController {
 	@RequestMapping("/delete_order_item")
 	public String deleteOrderItem(Integer orderItemId) {
 		Order order = (Order)session.getAttribute("order");
-		OrderItem orderItem = null;
-		
-		for(OrderItem oi:order.getOrderItemList()) {
-			if(oi.getId().equals(orderItemId)) {
-				orderItem = oi;
-			}
-		}
+//		OrderItem orderItem = null;
+//		
+//		for(OrderItem oi:order.getOrderItemList()) {
+//			if(oi.getId().equals(orderItemId)) {
+//				orderItem = oi;
+//			}
+//		}
+		OrderItem orderItem =  order.getOrderItemList().stream()
+										.filter(oi -> oi.getId().equals(orderItemId))
+										.findAny()
+										.get();
 		Integer subtotal = orderItem.getSubTotal();
 		order.setTotalPrice(order.getCalcTotalPrice()-(int)(subtotal + subtotal * 0.1));
 		deleteOrderItemService.deleteOrderTopping(orderItemId);

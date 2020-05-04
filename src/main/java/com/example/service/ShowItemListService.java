@@ -2,6 +2,7 @@ package com.example.service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -69,15 +70,24 @@ public class ShowItemListService {
 	 */
 	public StringBuilder getItemListForAutocomplete(List<Item> itemList) {
 		StringBuilder itemListForAutocomplete = new StringBuilder();
-		for (int i = 0; i < itemList.size(); i++) {
-			if (i != 0) {
-				itemListForAutocomplete.append(",");
-			}
-			Item item = itemList.get(i);
-			itemListForAutocomplete.append("\"");
-			itemListForAutocomplete.append(item.getName());
-			itemListForAutocomplete.append("\"");
-		}
+//		for (int i = 0; i < itemList.size(); i++) {
+//			if (i != 0) {
+//				itemListForAutocomplete.append(",");
+//			}
+//			Item item = itemList.get(i);
+//			itemListForAutocomplete.append("\"");
+//			itemListForAutocomplete.append(item.getName());
+//			itemListForAutocomplete.append("\"");
+//		}
+		IntStream.range(0, itemList.size())
+					.forEach(i -> {
+						Item item = itemList.get(i);
+						itemListForAutocomplete.append("\"");
+						itemListForAutocomplete.append(item.getName());
+						itemListForAutocomplete.append("\"");
+						itemListForAutocomplete.append(",");
+					});
+		
 		return itemListForAutocomplete;
 	}
 }

@@ -88,6 +88,11 @@ public class BuyOrderController {
 		return "redirect:/complete";
 	}
 	
+	/**
+	 * 注文完了画面を表示させる.
+	 * 
+	 * @return 注文終了画面
+	 */
 	@RequestMapping("/complete")
 	public String toOrderFinished() {
 		return "order_finished";

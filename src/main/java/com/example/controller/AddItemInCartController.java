@@ -42,6 +42,12 @@ public class AddItemInCartController {
 		return "redirect:/show_cart_list";
 	}
 	
+	/**
+	 * ショッピングカートの中身を表示させる.
+	 * 
+	 * @param model リクエストスコープ
+	 * @return カートリストページ
+	 */
 	@RequestMapping("/show_cart_list")
 	public String toCartList(Model model) {
 		Order order = null;

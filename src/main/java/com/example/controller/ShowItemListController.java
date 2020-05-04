@@ -2,6 +2,7 @@ package com.example.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,7 +47,8 @@ public class ShowItemListController {
 				superItemList.add(bigThreeList);
 				bigThreeList = new ArrayList<>();
 			}
-		}
+		}			
+		
 		if (bigThreeList.size() != 0) {
 			superItemList.add(bigThreeList);
 		}
